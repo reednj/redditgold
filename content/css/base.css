@@ -1,0 +1,167 @@
+/* default.css */
+
+html, body, form {
+	margin: 0;
+	padding: 0;
+	font-family: arial;
+}
+
+p, div, span, h1, h2, h3, h4 {
+	margin:  0;
+	padding: 0;
+}
+
+.clear { clear: both; }
+.left  { float: left; }
+.right { float:right; }
+
+a {	color: #0099FF;	text-decoration: none;}
+a:hover { text-decoration: underline;}
+p {	padding-top: 1px; }
+
+/* Sticky Footer by Ryan Fait http://ryanfait.com/ */
+
+html, body {
+	height: 100%;
+}
+.wrapper {
+	min-height: 100%;
+	height: auto !important;
+	height: 100%;
+	margin: 0 auto -70px;
+}
+.footer, .push {
+	height: 70px;
+}
+
+/* Base css classes */
+
+.so-site-select {
+	color: gray;
+	font-size: 14pt;
+	font-weight: bold;
+}
+
+.so-header {
+	border-bottom: 12px solid #FF9932;
+	padding-left: 36px;
+	padding-bottom: 8px;
+	padding-top: 80px;
+	margin-bottom: 6px;
+	margin-right: 60px;
+	text-align: right;
+}
+
+.so-title {
+	color: gray;
+	font-size: 34pt;
+}
+
+.so-title > a {
+	color: black !important;
+	text-decoration: none;
+}
+
+.sub-title, .footer {
+	font-size: 9pt;
+	color: gray;
+}
+
+.sub-title {
+}
+
+.footer > div {
+	border-right: 1px solid #ccc;
+	text-align: right;
+	margin-right: 60px;
+	padding-right: 8px;
+	padding-top: 0px;
+	padding-bottom: 4px;
+}
+
+a {
+	color: #777;
+	text-decoration: underline;
+}
+
+a:hover {
+	color: #555;
+}
+
+.so-body > div.block {
+	float: right;
+	margin-right: 60px;
+	margin-top: 8px;
+	padding-top: 8px;
+}
+
+div.block h2 {
+	color: #bbb;
+	font-size: 12pt;
+}
+
+div.block table {
+
+}
+
+div.block table thead td {
+	border-bottom: 1px solid #ccc;
+	text-align: center;
+}
+
+div.block table td {
+	font-size: 12pt;
+	font-weight: bold;
+	color: #999;
+	padding: 2px;
+	width: 80px;
+	text-align: right;
+}
+
+.so-counter-list {
+	float: right;
+	display: inline-block;
+	text-align: right;
+	margin-right: 60px;
+	padding-bottom: 8px;
+}
+
+.so-counter {
+	font-size: 42pt;
+}
+
+a.so-counter {
+	color: black;
+}
+
+.so-label {
+	color: #999;
+	font-size: 18pt;
+	font-weight: bold;
+}
+
+.so-rate {
+	font-size: 12pt;
+	color: #bbb;
+
+}
+
+.so-counter-block {
+	padding: 4px;
+	margin-left: 32px;
+
+	float: right;
+}
+
+.so-tag-list {
+
+	float: right;
+	text-align: right;
+	margin-top: 42px;
+	padding-right:16px;
+	width: 50%;
+	font-size: 14pt;
+	color: gray;
+
+}
+
