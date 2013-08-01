@@ -32,11 +32,29 @@ Class Comments {
 			select
 				year(created_date) as year,
 				week(created_date) as week,
+				month(created_date) as month,
 				count(*) * $gold_cost as revenue
 			from comments
 			where created_date > (now() - interval '$dayCount' day)
 			group by year(created_date), week(created_date)
 			order by year(created_date), week(created_date)
+		");
+	}
+
+	static function RevenueByDay($dayCount = 30) {
+		$dayCount = ESQL::Escape($dayCount);
+		$gold_cost = 3.99;
+
+		return ESQL::Query("
+			select
+				year(created_date) as year,
+				month(created_date) as month,
+				day(created_date) as day,
+				count(*) * $gold_cost as revenue
+			from comments
+			where created_date > (now() - interval '$dayCount' day)
+			group by year(created_date), month(created_date), day(created_date)
+			order by year(created_date), month(created_date), day(created_date)
 		");
 	}
 

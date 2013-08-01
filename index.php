@@ -31,19 +31,16 @@ _weekly_data = <?= json_encode($weekly_data) ?>;
 window.addEvent('load', function() {
 	var labels = [];
 	var data = [];
-	var week_count = 26;
+	var months = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
+	var week_count = 12;
+	var first_month = (_weekly_data[_weekly_data.length-1].month;
+
 	for(var i=0; i < week_count; i++) {
 		if(week_count - i - 1 < _weekly_data.length) {
 			var week = _weekly_data[week_count - i - 1];
 			data.push(week.revenue);
 		} else {
 			data.push(0);
-		}
-
-		if(i % 4 == 0) {
-			labels.push('Jan');
-		} else {
-			labels.push('');
 		}
 	}
 
