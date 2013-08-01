@@ -43,13 +43,13 @@ html, body {
 }
 
 .so-header {
-	border-bottom: 12px solid #FF9932;
+	border-bottom: 6px solid #FF9932;
 	padding-left: 36px;
 	padding-bottom: 8px;
 	padding-top: 80px;
 	margin-bottom: 6px;
 	margin-right: 60px;
-	text-align: right;
+	text-align: left;
 }
 
 .so-title {
@@ -95,6 +95,10 @@ a:hover {
 	padding-top: 8px;
 }
 
+.so-body > div.block.last {
+	margin-bottom: 16px;
+}
+
 div.block h2 {
 	color: #bbb;
 	font-size: 12pt;
@@ -122,8 +126,9 @@ div.block table td {
 	float: right;
 	display: inline-block;
 	text-align: right;
-	margin-right: 60px;
-	padding-bottom: 8px;
+	padding-right: 60px;
+	border-bottom: 6px solid #FF9932;
+	margin-bottom: 16px;
 }
 
 .so-counter {
@@ -149,19 +154,15 @@ a.so-counter {
 .so-counter-block {
 	padding: 4px;
 	margin-left: 32px;
-
 	float: right;
 }
 
-.so-tag-list {
+.so-counter-block.last {
+	margin-left: 0;
+}
 
+#weekly-chart {
 	float: right;
-	text-align: right;
-	margin-top: 42px;
-	padding-right:16px;
-	width: 50%;
-	font-size: 14pt;
-	color: gray;
-
+	margin-right: 60px;
 }
 
