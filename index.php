@@ -102,39 +102,18 @@ function $(id) {
 			<div class='so-label'> last 24 hrs <span class='so-rate'> ($<?= number_format($day_rate, 2); ?> / hr)</span> </div>
 		</div>
 
+
 		<div class='clear'></div>
 
 	</div>
 
 	<div class='clear'></div>
 
-	<canvas id="weekly-chart" width="605" height="220">
-		<div class='block'>
-
-			<table>
-				<thead>
-					<tr>
-						<td colspan='2'><h2>Revenue by Week</h2></td>
-					</tr>
-				</thead>
-
-				<tbody>
-				<?php foreach($daily_data as $day) { ?>
-
-				<tr>
-					<td><?= $day['date'] ?></td>
-					<td>$<?= number_format($day['revenue']) ?></td>
-				</tr>
-
-				<?php } ?>
-				</tbody>
-			</table>
-		</div>
-	</canvas>
+	<canvas id="weekly-chart" width="605" height="220"></canvas>
 
 	<div class='clear'></div>
 
-	<div class='block last'>
+	<div class='block last' style='display:none'>
 
 		<table>
 			<thead>
