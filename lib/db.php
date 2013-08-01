@@ -47,14 +47,13 @@ Class Comments {
 
 		return ESQL::Query("
 			select
-				year(created_date) as year,
-				month(created_date) as month,
-				day(created_date) as day,
-				count(*) * $gold_cost as revenue
-			from comments
-			where created_date > (now() - interval '$dayCount' day)
-			group by year(created_date), month(created_date), day(created_date)
-			order by year(created_date), month(created_date), day(created_date)
+				date_index as comment_date,
+				day(date_index) as day,
+				((select count(*) from comments where date(created_date) = date(dl.date_index)) * $gold_cost) as revenue
+			from date_list dl
+			where
+				dl.date_index < now() &&
+				dl.date_index > now() - INTERVAL '$dayCount' day
 		");
 	}
 

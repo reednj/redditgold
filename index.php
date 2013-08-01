@@ -11,7 +11,7 @@
 	$week_rate = $week_count / (7 * 24);
 	$month_rate = $month_count / (30 * 24);
 
-	$weekly_data = Comments::RevenueByWeek();
+	$daily_data = Comments::RevenueByDay();
 	$subreddit_data = Comments::TopSubreddits();
 ?>
 
@@ -26,22 +26,16 @@
 <script type='text/javascript' src='content/js/Chart.min.js'></script>
 <script type='text/javascript'>
 
-_weekly_data = <?= json_encode($weekly_data) ?>;
+_daily_data = <?= json_encode($daily_data) ?>;
 
 window.addEvent('load', function() {
-	var labels = [];
 	var data = [];
-	var months = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
-	var week_count = 12;
-	var first_month = (_weekly_data[_weekly_data.length-1].month;
+	var labels = [];
 
-	for(var i=0; i < week_count; i++) {
-		if(week_count - i - 1 < _weekly_data.length) {
-			var week = _weekly_data[week_count - i - 1];
-			data.push(week.revenue);
-		} else {
-			data.push(0);
-		}
+	for(var i=0; i < _daily_data.length -1; i++) {
+		var day = _daily_data[i];
+		data.push(parseFloat(day.revenue, 10));
+		labels.push(day.day);
 	}
 
 	var ctx = $('weekly-chart').getContext('2d');
@@ -49,8 +43,8 @@ window.addEvent('load', function() {
 		labels: labels,
 		datasets: [
 			{
-				fillColor : "rgba(220,100,100,0.8)",
-				strokeColor : "rgba(220,100,100,1)",
+				fillColor : "rgba(255,153,50, 0.7)",
+				strokeColor : "rgb(255,153,50)",
 				data: data
 			}
 		]
@@ -125,11 +119,11 @@ function $(id) {
 				</thead>
 
 				<tbody>
-				<?php foreach($weekly_data as $week) { ?>
+				<?php foreach($daily_data as $day) { ?>
 
 				<tr>
-					<td><?= $week['year'].'-'.$week['week'] ?></td>
-					<td>$<?= number_format($week['revenue']) ?></td>
+					<td><?= $day['date'] ?></td>
+					<td>$<?= number_format($day['revenue']) ?></td>
 				</tr>
 
 				<?php } ?>
