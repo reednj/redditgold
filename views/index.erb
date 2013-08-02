@@ -1,32 +1,15 @@
-<?php
-	require_once 'lib/db.php';
-
-	$gold_cost = 3.99;
-
-	$day_count = Comments::GoldCount(1) * $gold_cost;
-	$week_count = Comments::GoldCount(7) * $gold_cost;
-	$month_count = Comments::GoldCount(30) * $gold_cost;
-
-	$day_rate = $day_count / (1 * 24);
-	$week_rate = $week_count / (7 * 24);
-	$month_rate = $month_count / (30 * 24);
-
-	$daily_data = Comments::RevenueByDay();
-	$subreddit_data = Comments::TopSubreddits();
-?>
-
 <!doctype html >
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 <title>gold-counter - tracking revenue from reddit gold</title>
 
-<link rel="stylesheet" href="content/css/base.css" type="text/css" media="screen, projection">
+<link rel="stylesheet" href="css/base.css" type="text/css" media="screen, projection">
 
-<script type='text/javascript' src='content/js/Chart.min.js'></script>
+<script type='text/javascript' src='js/Chart.min.js'></script>
 <script type='text/javascript'>
 
-_daily_data = <?= json_encode($daily_data) ?>;
+_daily_data = <%= dailyData.to_json %>;
 
 window.addEvent('load', function() {
 	var data = [];
@@ -88,18 +71,18 @@ function $(id) {
 	<div class='so-counter-list'>
 
 		<div class='so-counter-block'>
-			<div class='so-counter'> $<?= number_format($month_count); ?> </div>
-			<div class='so-label'> last month <span class='so-rate'> ($<?= number_format($month_rate, 2); ?> / hr)</span> </div>
+			<div class='so-counter'> $<%= monthCount.round.commas %> </div>
+			<div class='so-label'> last month <span class='so-rate'> ($<%= '%.2f' % monthRate %> / hr)</span> </div>
 		</div>
 
 		<div class='so-counter-block'>
-			<div class='so-counter'> $<?= number_format($week_count); ?> </div>
-			<div class='so-label'> last week <span class='so-rate'> ($<?= number_format($week_rate, 2); ?> / hr)</span> </div>
+			<div class='so-counter'> $<%= weekCount.round.commas %> </div>
+			<div class='so-label'> last week <span class='so-rate'> ($<%= '%.2f' % weekRate %> / hr)</span> </div>
 		</div>
 
 		<div class='so-counter-block last'>
-			<div class='so-counter'> $<?= number_format($day_count); ?> </div>
-			<div class='so-label'> last 24 hrs <span class='so-rate'> ($<?= number_format($day_rate, 2); ?> / hr)</span> </div>
+			<div class='so-counter'> $<%= dayCount.round.commas %> </div>
+			<div class='so-label'> last 24 hrs <span class='so-rate'> ($<%= '%.2f' % dayRate %> / hr)</span> </div>
 		</div>
 
 
@@ -113,6 +96,7 @@ function $(id) {
 
 	<div class='clear'></div>
 
+<!--
 	<div class='block last' style='display:none'>
 
 		<table>
@@ -123,20 +107,19 @@ function $(id) {
 			</thead>
 
 			<tbody>
-			<?php foreach($subreddit_data as $subreddit) { ?>
+
 
 			<tr>
 				<td><?= $subreddit['subreddit'] ?></td>
 				<td>$<?= number_format($subreddit['revenue']) ?></td>
 			</tr>
 
-			<?php } ?>
 			</tbody>
 		</table>
 	</div>
 
 	<div class='clear'></div>
-
+-->
 </div>
 
 <div class="push"></div>
