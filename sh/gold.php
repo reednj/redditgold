@@ -15,6 +15,8 @@ foreach($data->data->children as $comment) {
 }
 
 foreach(array_reverse($new_comments) as $comment) {
+	
+	print  $comment->data->id . "\n";
 
 	Comments::Insert(array(
 		'comment_id' => $comment->data->id,
@@ -24,6 +26,13 @@ foreach(array_reverse($new_comments) as $comment) {
 		'gold_count' => $comment->data->gilded,
 		'post_date' => date('c', $comment->data->created_utc)
 	));
+	
+	ESQL::Insert('comment_content', array(
+		'comment_id' => $comment->data->id,
+		'content' => $comment->data->body
+	));
+	
+	print mysql_error();
 }
 
 

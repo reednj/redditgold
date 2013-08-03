@@ -9,7 +9,7 @@
  */
 
 // dbpass.php should contain your username & password etc
-require_once 'config/esql.dbpass.php';
+require_once 'esql.dbpass.php';
 
 abstract class ESQLTable {
 
