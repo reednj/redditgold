@@ -1,12 +1,18 @@
 #!/bin/sh
 
-BASE=~/gold.popacular.com
+WEB=~/gold.popacular.com
+SRC=~/code/redditgold.git
+SCRIPTS=~/scripts/redditgold
+CONFIG=~/code/config_backup/redditgold
 
 # copy the required files to the website
-rm -rf $BASE/*
-cp -R ~/code/redditgold.git/* $BASE
-rm -rf $BASE/sh
-cp ~/code/config_backup/redditgold/esql.dbpass.php $BASE/config/
+rm -rf $WEB/*
+cp -R $SRC/* $WEB
+rm -rf $WEB/sh
+cp $CONFIG/db.rb $WEB/config/
 
 # now to the script folder
-
+rm -rf $SCRIPTS/*
+mkdir $SCRIPTS/sh
+cp -R $SRC/sh/* $SCRIPTS/sh
+cp $CONFIG/esql.dbpass.php $SCRIPTS/sh/lib
