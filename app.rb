@@ -6,25 +6,33 @@ require 'json'
 
 require './config/db'
 require './lib/simpledb'
+require './lib/filecache'
 
 
 get '/' do
 	sdb = SimpleDb.new
-
+	fc = FileCache.new
 	goldCost = 3.99
-	dayCount = sdb.goldCount(1) * goldCost
-	weekCount = sdb.goldCount(7) * goldCost
-	monthCount = sdb.goldCount(30) * goldCost
 
-	erb :index, :locals => {
-		:dayCount => dayCount,
-		:weekCount => weekCount,
-		:monthCount => monthCount,
-		:dayRate => dayCount / (1 * 24),
-		:weekRate => weekCount / (7 * 24),
-		:monthRate => monthCount / (30 * 24),
-		:dailyData => sdb.revenueByDay(30),
-		:topComments => sdb.topComments(7)[0..5]
-	}
+	locals = fc.cache('gold.data', 300) do
+		data = {
+			:dayCount => sdb.goldCount(1) * goldCost,
+			:weekCount => sdb.goldCount(7) * goldCost,
+			:monthCount => sdb.goldCount(30) * goldCost,
+			:dailyData => sdb.revenueByDay(30),
+			:topComments => sdb.topComments(7)[0..5]
+		}
+
+		data = data.merge({ 
+			:dayRate => data[:dayCount] / (1 * 24),
+			:weekRate => data[:weekCount] / (1 * 24),
+			:monthRate => data[:monthCount] / (1 * 24)
+		})
+
+		puts 'Cache Refresh'
+		data
+	end
+
+	erb :index, :locals => locals
 end
 
