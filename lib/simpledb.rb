@@ -1,7 +1,9 @@
 
+
 class SimpleDb
 	def initialize
 		@db = nil
+		@GoldCost = 3.99
 	end
 
 	def connect
@@ -26,13 +28,30 @@ class SimpleDb
 	def goldCount(days)
 		return self.db.from(:comments).where{ created_date > Date.today - days }.count
 	end
+	
+	def topComments(days)
+		return self.db["
+			select
+				c.comment_id,
+				c.thread_id,
+				count(*) as gold_count,
+				count(*) * #{@GoldCost} as revenue,
+				c.user,
+				cc.content as comment_text
+			from comments c 
+				inner join comment_content cc on cc.comment_id = c.comment_id
+			where created_date > now() - interval #{days} day
+			group by c.comment_id
+			order by count(*) desc
+			limit 100
+		"].all
+	end
 
 	def revenueBySubreddit(days)
-		goldCost = 3.99
 
 		return self.db["select
 				subreddit,
-				count(*) * #{goldCost} as revenue
+				count(*) * #{@GoldCost} as revenue
 			from comments
 			where created_date > (now() - interval '#{days}' day)
 			group by subreddit
@@ -41,12 +60,11 @@ class SimpleDb
 	end
 
 	def revenueByDay(days)
-		goldCost = 3.99
 
 		return self.db["select
 				date_index as comment_date,
 				day(date_index) as day,
-				((select count(*) from comments where date(created_date) = date(dl.date_index)) * #{goldCost}) as revenue
+				((select count(*) from comments where date(created_date) = date(dl.date_index)) * #{@GoldCost}) as revenue
 			from date_list dl
 			where
 				dl.date_index < now() &&
@@ -63,4 +81,15 @@ class Numeric
 		int.reverse + dec
 	end
 end
+
+class String
+	def truncate(len, omission='...')
+		if self.length <= len
+			return self 
+		else
+			return self[0, len].strip + omission
+		end
+	end
+end
+
 

@@ -1,3 +1,4 @@
+
 <!doctype html >
 <html>
 <head>
@@ -96,6 +97,25 @@ function $(id) {
 
 	<div class='clear'></div>
 
+	<div class='block comments last'>
+		<h2>Top Comments this Week</h2>
+		<% 
+		topComments.each do |comment|
+			comment_link = "http://reddit.com/comments/#{comment[:thread_id][3..-1]}/-/#{comment[:comment_id]}?context=1"
+		%>
+			<div class='comment'>
+				<div class='title'>
+					<span class='user'> <a href='http://reddit.com/u/<%= comment[:user] %>'><%= comment[:user] %></a></span>
+					<span class='gilded'><%= comment[:gold_count] %>&times;&#x2605;</span>
+				</div>
+				<div class='body'>
+					<%= comment[:comment_text].to_s.truncate(256, "...") %>
+					 <a class='more' href='<%= comment_link %>'>see more</a>
+				</div>
+			</div>
+		<% end %>
+	</div>
+	
 <!--
 	<div class='block last' style='display:none'>
 

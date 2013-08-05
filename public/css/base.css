@@ -165,3 +165,31 @@ a.so-counter {
 	margin-right: 60px;
 }
 
+/* comment view */
+
+.block.comments h2 {
+	margin-top: 8px;
+	margin-bottom: 4px;
+}
+
+.comment {
+	width: 600px;
+	margin-bottom: 8px;
+}
+
+.comment .title {
+	color: gray;
+	font-weight: bold;
+	font-size: 9pt;
+	margin-bottom: 4px;
+}
+
+.comment .body {
+	color: #222;
+	font-size: 10pt;
+}
+
+.comment .body a.more {
+	font-style: italic;
+}
+
