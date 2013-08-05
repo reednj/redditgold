@@ -100,6 +100,7 @@ function $(id) {
 	<div class='block comments last'>
 		<h2>Top Comments this Week</h2>
 		<% 
+
 		topComments.each do |comment|
 			comment_link = "http://reddit.com/comments/#{comment[:thread_id][3..-1]}/-/#{comment[:comment_id]}?context=1"
 		%>
@@ -115,7 +116,9 @@ function $(id) {
 			</div>
 		<% end %>
 	</div>
-	
+
+	<div class='clear'></div>
+
 <!--
 	<div class='block last' style='display:none'>
 
@@ -138,7 +141,7 @@ function $(id) {
 		</table>
 	</div>
 
-	<div class='clear'></div>
+	
 -->
 </div>
 

@@ -24,7 +24,7 @@ get '/' do
 		:weekRate => weekCount / (7 * 24),
 		:monthRate => monthCount / (30 * 24),
 		:dailyData => sdb.revenueByDay(30),
-		:topComments => sdb.topComments(7)
+		:topComments => sdb.topComments(7)[0..5]
 	}
 end
 
