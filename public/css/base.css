@@ -177,11 +177,19 @@ a.so-counter {
 	margin-bottom: 8px;
 }
 
+.comment .head {
+	margin-bottom: 6px;
+}
+
 .comment .title {
 	color: gray;
 	font-weight: bold;
 	font-size: 9pt;
-	margin-bottom: 4px;
+	margin-bottom: 2px;
+}
+
+.comment .subreddit {
+	font-size: 8pt;
 }
 
 .comment .body {

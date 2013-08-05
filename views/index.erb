@@ -105,9 +105,12 @@ function $(id) {
 			comment_link = "http://reddit.com/comments/#{comment[:thread_id][3..-1]}/-/#{comment[:comment_id]}?context=1"
 		%>
 			<div class='comment'>
-				<div class='title'>
-					<span class='user'> <a href='http://reddit.com/u/<%= comment[:user] %>'><%= comment[:user] %></a></span>
-					<span class='gilded'><%= comment[:gold_count] %>&times;&#x2605;</span>
+				<div class='head'>
+					<div class='title'>
+						<span class='user'> <a href='http://reddit.com/u/<%= comment[:user] %>'><%= comment[:user] %></a></span>
+						<span class='gilded'><%= comment[:gold_count] %>&times;&#x2605;</span>
+					</div>
+					<div class='subreddit'>in <a href='http://reddit.com/r/<%= comment[:subreddit] %>'>/r/<%= comment[:subreddit] %></a></div>
 				</div>
 				<div class='body'>
 					<%= comment[:comment_text].to_s.truncate(256, "...") %>

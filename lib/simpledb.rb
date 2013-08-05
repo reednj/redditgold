@@ -34,6 +34,7 @@ class SimpleDb
 			select
 				c.comment_id,
 				c.thread_id,
+				c.subreddit,
 				count(*) as gold_count,
 				count(*) * #{@GoldCost} as revenue,
 				c.user,
