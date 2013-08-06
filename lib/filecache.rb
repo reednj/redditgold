@@ -15,8 +15,13 @@ class FileCache
 			return data
 		else
 			data = yield
-			json_obj = {:data => data}
-			File.write(self.getPath(filename), json_obj.to_json)
+
+			File.open(self.getPath(filename), 'w') { |file| 
+				# we need to wrap the data in an object, or the parsing can
+				# fuck up for simple objects like strings, floats etc
+				file.write({:data => data}.to_json) 
+			}
+
 			return data
 		end
 
