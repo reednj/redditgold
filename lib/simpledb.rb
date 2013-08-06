@@ -36,28 +36,28 @@ class SimpleDb
 				c.thread_id,
 				c.subreddit,
 				count(*) as gold_count,
-				count(*) * #{@GoldCost} as revenue,
+				count(*) * ? as revenue,
 				c.user,
 				cc.content as comment_text
 			from comments c 
 				inner join comment_content cc on cc.comment_id = c.comment_id
-			where created_date > now() - interval #{days} day
+			where created_date > now() - interval ? day
 			group by c.comment_id
 			order by count(*) desc
 			limit 100
-		"].all
+		", @GoldCost, days].all
 	end
 
 	def revenueBySubreddit(days)
 
 		return self.db["select
 				subreddit,
-				count(*) * #{@GoldCost} as revenue
+				count(*) * ? as revenue
 			from comments
-			where created_date > (now() - interval '#{days}' day)
+			where created_date > (now() - interval '?' day)
 			group by subreddit
 			order by count(*) desc
-			limit 12"].all;
+			limit 12", @GoldCost, days].all;
 	end
 
 	def revenueByDay(days)
@@ -65,11 +65,11 @@ class SimpleDb
 		return self.db["select
 				date_index as comment_date,
 				day(date_index) as day,
-				((select count(*) from comments where date(created_date) = date(dl.date_index)) * #{@GoldCost}) as revenue
+				((select count(*) from comments where date(created_date) = date(dl.date_index)) * ?) as revenue
 			from date_list dl
 			where
 				dl.date_index < now() &&
-				dl.date_index > now() - INTERVAL '#{days}' day"].all;
+				dl.date_index > now() - INTERVAL '?' day", @GoldCost, days].all;
 	end
 end
 
