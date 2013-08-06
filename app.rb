@@ -41,6 +41,6 @@ end
 
 class GitVersion
 	def self.current(gitdir='./.git')
-		return FileCache.new.cache('git.version', 3600 * 24 * 7) { `git --git-dir=#{gitdir} describe --long` }
+		return FileCache.new.cache('git.version', 3600 * 24 * 7) { `git --git-dir=#{gitdir} describe --long --always` }
 	end
 end
