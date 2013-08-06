@@ -15,7 +15,8 @@ class FileCache
 			return data
 		else
 			data = yield
-			File.write(self.getPath(filename), data.to_json)
+			json_obj = {:data => data}
+			File.write(self.getPath(filename), json_obj.to_json)
 			return data
 		end
 
@@ -26,7 +27,8 @@ class FileCache
 	def fromCache(filename, maxage_sec)
 		path = self.getPath filename
 		if File.exist?(path) && File.mtime(path) > Time.now - maxage_sec
-			return JSON.parse(File.read(path), {:symbolize_names => true})
+			json_obj = JSON.parse(File.read(path), {:symbolize_names => true})
+			return json_obj[:data]
 		else
 			return nil
 		end

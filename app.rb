@@ -33,6 +33,13 @@ get '/' do
 		data
 	end
 
+	locals[:version] = GitVersion.current
+
 	erb :index, :locals => locals
 end
 
+class GitVersion
+	def self.current
+		return FileCache.new.cache('git.version', 7 * 24 * 3600) { `git describe --long` }
+	end
+end
