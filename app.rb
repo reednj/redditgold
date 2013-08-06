@@ -33,13 +33,14 @@ get '/' do
 		data
 	end
 
-	locals[:version] = GitVersion.current
+	gitdir = '/home/reednj/code/redditgold.git/.git' if !settings.development?
+	locals[:version] = GitVersion.current(gitdir)
 
 	erb :index, :locals => locals
 end
 
 class GitVersion
-	def self.current
-		return FileCache.new.cache('git.version', 7 * 24 * 3600) { `git describe --long` }
+	def self.current(gitdir='./.git')
+		return FileCache.new.cache('git.version', 3600 * 24 * 7) { `git --git-dir=#{gitdir} describe --long` }
 	end
 end
