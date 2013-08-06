@@ -46,7 +46,7 @@ html, body {
 	border-bottom: 6px solid #FF9932;
 	padding-left: 36px;
 	padding-bottom: 8px;
-	padding-top: 80px;
+	padding-top: 40px;
 	margin-bottom: 6px;
 	margin-right: 60px;
 	text-align: left;
@@ -67,13 +67,13 @@ html, body {
 	color: gray;
 }
 
-.sub-title {
+.footer {
+	margin-right: 60px;
 }
 
 .footer > div {
 	border-right: 1px solid #ccc;
 	text-align: right;
-	margin-right: 60px;
 	padding-right: 8px;
 	padding-top: 0px;
 	padding-bottom: 4px;
@@ -88,9 +88,12 @@ a:hover {
 	color: #555;
 }
 
+.so-body {
+	margin-right: 60px;
+}
+
 .so-body > div.block {
 	float: right;
-	margin-right: 60px;
 	margin-top: 8px;
 	padding-top: 8px;
 }
@@ -126,7 +129,6 @@ div.block table td {
 	float: right;
 	display: inline-block;
 	text-align: right;
-	padding-right: 60px;
 	margin-bottom: 16px;
 }
 
@@ -162,7 +164,6 @@ a.so-counter {
 
 #weekly-chart {
 	float: right;
-	margin-right: 60px;
 }
 
 /* comment view */
