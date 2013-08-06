@@ -25,8 +25,8 @@ get '/' do
 
 		data = data.merge({ 
 			:dayRate => data[:dayCount] / (1 * 24),
-			:weekRate => data[:weekCount] / (1 * 24),
-			:monthRate => data[:monthCount] / (1 * 24)
+			:weekRate => data[:weekCount] / (7 * 24),
+			:monthRate => data[:monthCount] / (30 * 24)
 		})
 
 		puts 'Cache Refresh'
