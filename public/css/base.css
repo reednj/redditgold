@@ -167,6 +167,9 @@ a.so-counter {
 }
 
 /* comment view */
+.block.comments {
+	width: 600px;
+}
 
 .block.comments h2 {
 	margin-top: 8px;
@@ -174,7 +177,6 @@ a.so-counter {
 }
 
 .comment {
-	width: 600px;
 	margin-bottom: 8px;
 }
 
@@ -202,3 +204,50 @@ a.so-counter {
 	font-style: italic;
 }
 
+/* in order to render properly on mobile */
+@media only screen and (max-width:600px) {
+	.so-body, .header, .footer {
+		margin-right: 0;
+		padding-right: 8px;
+	}
+
+	.header {
+		padding-left: 16px;
+		padding-top: 10px;
+	}
+
+	.header .title {
+		font-size: 28pt;
+		text-align: left;
+	}
+
+	.footer > div {
+		border-right: none;
+	}
+
+	#weekly-chart {
+		display: none;
+	}
+
+	.block.comments {
+		border-top: 2px solid #FF9932;
+		margin-right: -8px;
+		padding-left: 8px;
+		width: 100%;
+	}
+
+	.block.comments h2 {
+		padding: 0 8px;
+		font-size: 18pt;
+	}
+
+	.comment {
+		padding: 0 8px;
+	}
+
+	/* this could probably be done better id I used em font sizes further up... */
+	.comment .title { font-size: 14pt; }
+	.comment .subreddit { font-size: 12pt; }
+	.comment .body { font-size: 12pt; }
+
+}
