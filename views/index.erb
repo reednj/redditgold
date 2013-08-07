@@ -14,6 +14,10 @@
 _daily_data = <%= dailyData.to_json %>;
 
 window.addEvent('load', function() {
+	if($('weekly-chart').getStyle('display') == 'none') {
+		return;
+	}
+
 	var data = [];
 	var labels = [];
 
@@ -39,6 +43,24 @@ window.addEvent('load', function() {
 		barValueSpacing: 1,
 		barStrokeWidth: 1
 	});
+
+});
+
+var implement = function(obj, fnName, fn) {
+	if(obj && fn && !obj.prototype[fnName]) {
+		obj.prototype[fnName] = fn;
+	}
+}
+
+implement(Object, 'implement', function(fnName, fn) { implement(this, fnName, fn); });
+implement(Array, 'implement', function(fnName, fn) { implement(this, fnName, fn); });
+
+Element.implement('getStyle', function(styleName) {
+	if(this.currentStyle) {
+		return this.currentStyle[styleName];
+	} else {
+		return window.getComputedStyle(this, null)[styleName];
+	}
 });
 
 function addEvent(event, fn) {
@@ -49,9 +71,10 @@ function addEvent(event, fn) {
     }
 }
 
-function $(id) {
+var $ = function(id) {
 	return document.getElementById(id);
 }
+
 
 </script>
 
