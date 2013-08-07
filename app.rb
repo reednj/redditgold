@@ -8,6 +8,8 @@ require './config/db'
 require './lib/simpledb'
 require './lib/filecache'
 
+set :gitdir, development? ? './.git' : '/home/reednj/code/redditgold.git/.git'
+set :version, GitVersion.current(settings.gitdir)
 
 get '/' do
 	sdb = SimpleDb.new
@@ -33,14 +35,6 @@ get '/' do
 		data
 	end
 
-	gitdir = '/home/reednj/code/redditgold.git/.git' if !settings.development?
-	locals[:version] = GitVersion.current(gitdir)
-
 	erb :index, :locals => locals
 end
 
-class GitVersion
-	def self.current(gitdir='./.git')
-		return FileCache.new.cache('git.version', 3600 * 24 * 7) { `git --git-dir=#{gitdir} describe --long --always` }
-	end
-end
