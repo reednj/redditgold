@@ -35,15 +35,15 @@ class SimpleDb
 				c.comment_id,
 				c.thread_id,
 				c.subreddit,
-				count(*) as gold_count,
-				count(*) * ? as revenue,
+				max(gold_count) as gold_count,
+				max(gold_count) * ? as revenue,
 				c.user,
 				cc.content as comment_text
 			from comments c 
 				inner join comment_content cc on cc.comment_id = c.comment_id
-			where created_date > now() - interval ? day
+			where post_date > now() - interval ? day
 			group by c.comment_id
-			order by count(*) desc
+			order by max(gold_count) desc
 			limit 100
 		", @GoldCost, days].all
 	end
