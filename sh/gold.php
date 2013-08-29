@@ -29,7 +29,8 @@ foreach(array_reverse($new_comments) as $comment) {
 	
 	ESQL::Insert('comment_content', array(
 		'comment_id' => $comment->data->id,
-		'content' => $comment->data->body
+		'content' => $comment->data->body,
+		'title' => $comment->data->link_title
 	));
 	
 	print mysql_error();

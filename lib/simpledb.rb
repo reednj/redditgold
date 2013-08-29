@@ -38,7 +38,8 @@ class SimpleDb
 				max(gold_count) as gold_count,
 				max(gold_count) * ? as revenue,
 				c.user,
-				cc.content as comment_text
+				cc.content as comment_text,
+				cc.title as thread_title
 			from comments c 
 				inner join comment_content cc on cc.comment_id = c.comment_id
 			where post_date > now() - interval ? day

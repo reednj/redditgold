@@ -125,7 +125,8 @@ var $ = function(id) {
 		<% 
 
 		topComments.each do |comment|
-			comment_link = "http://reddit.com/comments/#{comment[:thread_id][3..-1]}/-/#{comment[:comment_id]}?context=1"
+			thread_id = comment[:thread_id][3..-1]
+			comment_link = "http://reddit.com/comments/#{thread_id}/-/#{comment[:comment_id]}?context=1"
 		%>
 			<div class='comment'>
 				<div class='head'>
@@ -133,7 +134,10 @@ var $ = function(id) {
 						<span class='user'> <a href='http://reddit.com/u/<%= comment[:user] %>'><%= comment[:user] %></a></span>
 						<span class='gilded'><%= comment[:gold_count] %>&times;&#x2605;</span>
 					</div>
-					<div class='subreddit'>in <a href='http://reddit.com/r/<%= comment[:subreddit] %>'>/r/<%= comment[:subreddit] %></a></div>
+					<div class='subreddit'>
+						<a href='<%= "http://reddit.com/comments/#{thread_id}/" %>' title='<%= comment[:thread_title] %>'><%= comment[:thread_title].to_s.truncate(96, "...") %></a>
+						<a href='http://reddit.com/r/<%= comment[:subreddit] %>'>(/r/<%= comment[:subreddit] %>)</a>
+					</div>
 				</div>
 				<div class='body'>
 					<%= comment[:comment_text].to_s.truncate(256, "...") %>
