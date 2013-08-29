@@ -8,12 +8,13 @@ class SimpleDb
 
 	def connect
 		@db = Sequel.connect(
-			:adapter => 'mysql',
+			:adapter => 'mysql2',
 			:user => AppConfig.db.username,
 			:host => AppConfig.db.host,
 			:database => AppConfig.db.database,
 			:password=>AppConfig.db.password
 		)
+
 	end
 
 	def db
