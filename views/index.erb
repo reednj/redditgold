@@ -126,7 +126,13 @@ var $ = function(id) {
 
 		topComments.each do |comment|
 			thread_id = comment[:thread_id][3..-1]
-			comment_link = "http://reddit.com/comments/#{thread_id}/-/#{comment[:comment_id]}?context=1"
+			is_thread = thread_id == comment[:comment_id]
+
+			if is_thread
+				comment_link = "http://reddit.com/comments/#{thread_id}/"
+			else
+				comment_link = "http://reddit.com/comments/#{thread_id}/-/#{comment[:comment_id]}?context=1"
+			end			
 		%>
 			<div class='comment'>
 				<div class='head'>

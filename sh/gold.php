@@ -18,9 +18,19 @@ foreach(array_reverse($new_comments) as $comment) {
 	
 	print  $comment->data->id . "\n";
 
+	if(is_thread($comment->data->name)) {
+		$thread_id = $comment->data->name;
+		$title = $comment->data->title;
+		$body = $comment->data->is_self == 1 ? $comment->data->selftext : '';
+	} else {
+		$thread_id = $comment->data->link_id;
+		$title = $comment->data->link_title;
+		$body = $comment->data->body;
+	}
+
 	Comments::Insert(array(
 		'comment_id' => $comment->data->id,
-		'thread_id' => $comment->data->link_id,
+		'thread_id' => $thread_id,
 		'user' => $comment->data->author,
 		'subreddit' => $comment->data->subreddit,
 		'gold_count' => $comment->data->gilded,
@@ -29,14 +39,16 @@ foreach(array_reverse($new_comments) as $comment) {
 	
 	ESQL::Insert('comment_content', array(
 		'comment_id' => $comment->data->id,
-		'content' => $comment->data->body,
-		'title' => $comment->data->link_title
+		'content' => $body,
+		'title' => $title
 	));
 	
 	print mysql_error();
 }
 
-
+function is_thread($id) {
+	return strpos($id, 't3_') === 0;
+}
 
 
 ?>
