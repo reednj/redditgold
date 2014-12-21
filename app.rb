@@ -11,18 +11,20 @@ require './lib/filecache'
 set :gitdir, development? ? './.git' : '/home/reednj/code/redditgold.git/.git'
 set :version, GitVersion.current(settings.gitdir)
 
+DB = SimpleDb.new
+
 get '/' do
-	sdb = SimpleDb.new
+	
 	fc = FileCache.new
 	goldCost = 3.99
 
 	locals = fc.cache('gold.data', 300) do
 		data = {
-			:dayCount => sdb.goldCount(1) * goldCost,
-			:weekCount => sdb.goldCount(7) * goldCost,
-			:monthCount => sdb.goldCount(30) * goldCost,
-			:dailyData => sdb.revenueByDay(30),
-			:topComments => sdb.topComments(7)[0..5]
+			:dayCount => DB.goldCount(1) * goldCost,
+			:weekCount => DB.goldCount(7) * goldCost,
+			:monthCount => DB.goldCount(30) * goldCost,
+			:dailyData => DB.revenueByDay(30),
+			:topComments => DB.topComments(7)[0..5]
 		}
 
 		data = data.merge({ 
@@ -37,4 +39,14 @@ get '/' do
 
 	erb :index, :locals => locals
 end
+
+get '/r/:subreddit' do |subreddit|
+	
+end
+
+get '/gold/this_month' do
+	data = DB.revenueSince Time.now.beginning_of_month
+	return [200, {'Content-type' => 'text/plain'}, data.to_s]
+end
+
 

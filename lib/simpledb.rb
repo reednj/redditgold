@@ -30,6 +30,10 @@ class SimpleDb
 		return self.db.from(:comments).where{ created_date > Date.today - days }.count
 	end
 	
+	def revenueSince(date)
+		return self.db.from(:comments).where{ created_date > date }.count * @GoldCost
+	end
+
 	def topComments(days)
 		return self.db["
 			select
@@ -72,6 +76,12 @@ class SimpleDb
 			where
 				dl.date_index < now() &&
 				dl.date_index > now() - INTERVAL '?' day", @GoldCost, days].all;
+	end
+end
+
+class Time
+	def beginning_of_month
+		Time.parse(self.strftime("%Y-%m-01"))
 	end
 end
 
