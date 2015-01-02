@@ -49,7 +49,7 @@ get '/r/:subreddit' do |subreddit|
 	locals = FileCache.new.cache "#{subreddit}.data.txt", 300 do
 		{
 			:subreddit => subreddit,
-			:countData => DB.subredditRevenue(subreddit) * GOLDCOST,
+			:countData => DB.subredditRevenue(subreddit),
 			:startDate => DB.subredditStart(subreddit)
 		}
 	end
