@@ -1,4 +1,4 @@
-
+require "sinatra/reloader" if development?
 
 class SimpleDb
 	def initialize
@@ -76,6 +76,14 @@ class SimpleDb
 			where
 				dl.date_index < now() &&
 				dl.date_index > now() - INTERVAL '?' day", @GoldCost, days].all;
+	end
+
+	def subredditStart(subreddit)
+		self.db[:comments].where(:subreddit => subreddit).min(:created_date)
+	end
+
+	def subredditRevenue(subreddit)
+		self.db[:comments].where(:subreddit => subreddit).count * @GoldCost
 	end
 end
 

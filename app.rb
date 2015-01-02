@@ -45,11 +45,17 @@ get '/' do
 end
 
 get '/r/:subreddit' do |subreddit|
-	locals = {
-		:subreddit => subreddit,
-		:countData => DB.goldCount(30) * GOLDCOST,
-		:startDate => time_for('2014-01-01')
-	}
+
+	locals = FileCache.new.cache "#{subreddit}.data.txt", 300 do
+		{
+			:subreddit => subreddit,
+			:countData => DB.subredditRevenue(subreddit) * GOLDCOST,
+			:startDate => DB.subredditStart(subreddit)
+		}
+	end
+
+	halt 404, 'subreddit not found' if locals[:startDate].nil?
+	locals[:startDate] = time_for(locals[:startDate])
 
 	erb :subreddit, :layout => :_layout, :locals => locals
 end
