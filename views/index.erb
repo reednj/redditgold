@@ -125,7 +125,7 @@ var $ = function(id) {
 					</div>
 					<div class='subreddit'>
 						<a href='<%= "http://reddit.com/comments/#{thread_id}/" %>' title='<%= comment[:thread_title] %>'><%= comment[:thread_title].to_s.truncate(96, "...") %></a>
-						<a href='http://reddit.com/r/<%= comment[:subreddit] %>'>(/r/<%= comment[:subreddit] %>)</a>
+						<a href='/r/<%= comment[:subreddit] %>'>(/r/<%= comment[:subreddit] %>)</a>
 					</div>
 				</div>
 				<div class='body'>
