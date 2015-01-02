@@ -1,8 +1,10 @@
 
 require 'sinatra'
+require "sinatra/content_for"
 require "sinatra/reloader" if development?
 require 'sequel'
 require 'json'
+require 'erubis'
 
 require './config/db'
 require './lib/simpledb'
@@ -10,13 +12,15 @@ require './lib/filecache'
 
 set :gitdir, development? ? './.git' : '/home/reednj/code/redditgold.git/.git'
 set :version, GitVersion.current(settings.gitdir)
+set :erb, :escape_html => true
 
+GOLDCOST = 3.99
 DB = SimpleDb.new
 
 get '/' do
 	
 	fc = FileCache.new
-	goldCost = 3.99
+	goldCost = GOLDCOST
 
 	locals = fc.cache('gold.data', 300) do
 		data = {
@@ -37,11 +41,17 @@ get '/' do
 		data
 	end
 
-	erb :index, :locals => locals
+	erb :index, :layout => :_layout, :locals => locals
 end
 
 get '/r/:subreddit' do |subreddit|
-	
+	locals = {
+		:subreddit => subreddit,
+		:countData => DB.goldCount(30) * GOLDCOST,
+		:startDate => time_for('2014-01-01')
+	}
+
+	erb :subreddit, :layout => :_layout, :locals => locals
 end
 
 get '/gold/this_month' do

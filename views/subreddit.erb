@@ -1,0 +1,26 @@
+
+<% content_for :header do %>
+
+
+<% end %>
+
+<% content_for :body do %>
+
+<div class='subreddit-title'>
+	/r/<%= subreddit %>
+</div>
+
+<div class='so-counter-list'>
+
+	<div class='so-counter-block'>
+		<div class='so-counter'> $<%= countData.round.commas %> </div>
+		<div class='so-label'> since <span><%= startDate.strftime '%-d %B %Y' %></span> </div>
+	</div>
+
+	<div class='clear'></div>
+
+</div>
+
+<div class='clear'></div>
+
+<% end %>

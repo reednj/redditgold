@@ -204,6 +204,12 @@ a.so-counter {
 	font-style: italic;
 }
 
+.subreddit-title {
+	color: #bbb;
+	font-size: 36pt;
+	text-align: right;	
+}
+
 /* in order to render properly on mobile */
 @media only screen and (max-width:600px) {
 	.so-body, .header, .footer {
