@@ -71,11 +71,13 @@ class SimpleDb
 		return self.db["select
 				date_index as comment_date,
 				day(date_index) as day,
-				((select count(*) from comments where date(created_date) = date(dl.date_index)) * ?) as revenue
+				count(c.comment_id) * ? as revenue
 			from date_list dl
+				inner join comments c on date(c.created_date) = dl.date_index
 			where
 				dl.date_index < now() &&
-				dl.date_index > now() - INTERVAL '?' day", @GoldCost, days].all;
+				dl.date_index > now() - INTERVAL '?' day
+			group by dl.date_index", @GoldCost, days].all;
 	end
 
 	def subredditStart(subreddit)
