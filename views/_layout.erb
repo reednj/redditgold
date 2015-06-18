@@ -39,6 +39,10 @@
 <div class="footer">
 
 	<div>
+		<% if content_for? :footer %>
+			<%== yield_content :footer %>
+		<% end %>
+
 		<p>These numbers only include gifted gold, and don't take into account transaction fees etc.</p>
 		<p>
 			<a href='http://twitter.com/reednj'>Nathan Reed</a> (c) 2013 - <%= Time.now.year %> |

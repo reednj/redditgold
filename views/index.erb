@@ -163,3 +163,7 @@ var $ = function(id) {
 	
 -->
 <% end %>
+
+<% content_for :footer do %>
+	<p>data last updated <%= data_age.to_minutes.round %> minutes ago</p>
+<% end %>

@@ -87,11 +87,24 @@ class SimpleDb
 	def subredditRevenue(subreddit)
 		self.db[:comments].where(:subreddit => subreddit).count * @GoldCost
 	end
+
+	def last_comment
+		self.db[:comments].reverse_order(:created_date).limit(1)
+	end
+
+	def last_comment_age
+		created_date = self.last_comment.get(:created_date)
+		created_date.nil? ? -1 : created_date.age
+	end
 end
 
 class Time
 	def beginning_of_month
 		Time.parse(self.strftime("%Y-%m-01"))
+	end
+
+	def age
+		Time.now - self
 	end
 end
 
@@ -102,6 +115,10 @@ class Numeric
 		while int.gsub!(/(,|\.|^)(\d{3})(\d)/, '\1\2,\3')
 		end
 		int.reverse + dec
+	end
+
+	def to_minutes
+		self / 60.0
 	end
 end
 

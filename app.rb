@@ -28,7 +28,8 @@ get '/' do
 			:weekCount => DB.goldCount(7) * goldCost,
 			:monthCount => DB.goldCount(30) * goldCost,
 			:dailyData => DB.revenueByDay(30),
-			:topComments => DB.topComments(7)[0..5]
+			:topComments => DB.topComments(7)[0..5],
+			:data_age => DB.last_comment_age
 		}
 
 		data = data.merge({ 
@@ -64,5 +65,3 @@ get '/gold/this_month' do
 	data = DB.revenueSince Time.now.beginning_of_month
 	return [200, {'Content-type' => 'text/plain'}, data.to_s]
 end
-
-
