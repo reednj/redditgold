@@ -4,7 +4,7 @@
 <script type='text/javascript' src='js/Chart.min.js'></script>
 <script type='text/javascript'>
 
-_daily_data = <%== dailyData.to_json %>;
+_daily_data = <%== daily_data.to_json %>;
 
 window.addEvent('load', function() {
 	if($('weekly-chart').getStyle('display') == 'none') {
@@ -21,7 +21,7 @@ window.addEvent('load', function() {
 	}
 
 	var ctx = $('weekly-chart').getContext('2d');
-	var chart = new Chart(ctx).Bar({
+	var chart = new Chart(ctx).Line({
 		labels: labels,
 		datasets: [
 			{
@@ -78,18 +78,18 @@ var $ = function(id) {
 	<div class='so-counter-list'>
 
 		<div class='so-counter-block'>
-			<div class='so-counter'> $<%= monthCount.round.commas %> </div>
-			<div class='so-label'> last month <span class='so-rate'> ($<%= '%.2f' % monthRate %> / hr)</span> </div>
+			<div class='so-counter'> $<%= month_count.round.commas %> </div>
+			<div class='so-label'> last month <span class='so-rate'> ($<%= '%.2f' % month_rate %> / hr)</span> </div>
 		</div>
 
 		<div class='so-counter-block'>
-			<div class='so-counter'> $<%= weekCount.round.commas %> </div>
-			<div class='so-label'> last week <span class='so-rate'> ($<%= '%.2f' % weekRate %> / hr)</span> </div>
+			<div class='so-counter'> $<%= week_count.round.commas %> </div>
+			<div class='so-label'> last week <span class='so-rate'> ($<%= '%.2f' % week_rate %> / hr)</span> </div>
 		</div>
 
 		<div class='so-counter-block last'>
-			<div class='so-counter'> $<%= dayCount.round.commas %> </div>
-			<div class='so-label'> last 24 hrs <span class='so-rate'> ($<%= '%.2f' % dayRate %> / hr)</span> </div>
+			<div class='so-counter'> $<%= day_count.round.commas %> </div>
+			<div class='so-label'> last 24 hrs <span class='so-rate'> ($<%= '%.2f' % day_rate %> / hr)</span> </div>
 		</div>
 
 
@@ -107,7 +107,7 @@ var $ = function(id) {
 		<h2>Top Comments this Week</h2>
 		<% 
 
-		topComments.each do |comment|
+		top_comments.each do |comment|
 			thread_id = comment[:thread_id][3..-1]
 			is_thread = thread_id == comment[:comment_id]
 

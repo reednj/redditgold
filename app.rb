@@ -17,8 +17,6 @@ set :erb, :escape_html => true
 GOLDCOST = 3.99
 DB = SimpleDb.new
 
-
-
 configure :development do
 	# run the db backup script to make sure the schema we have stored is up to date...
 	`./config/db/export-db.sh`
@@ -38,22 +36,22 @@ end
 get '/' do
 	
 	fc = FileCache.new
-	goldCost = GOLDCOST
+	gold_cost = GOLDCOST
 
-	locals = fc.cache('gold.data', 300) do
+	locals = fc.cache('gold.data', 5.minutes) do
 		data = {
-			:dayCount => DB.goldCount(1) * goldCost,
-			:weekCount => DB.goldCount(7) * goldCost,
-			:monthCount => DB.goldCount(30) * goldCost,
-			:dailyData => DB.revenueByDay(30),
-			:topComments => DB.topComments(7)[0..5],
+			:day_count => DB.gold_count(1) * gold_cost,
+			:week_count => DB.gold_count(7) * gold_cost,
+			:month_count => DB.gold_count(30) * gold_cost,
+			:daily_data => DB.revenue_by_day(30),
+			:top_comments => DB.top_comments(7)[0..5],
 			:data_age => DB.last_comment_age
 		}
 
 		data = data.merge({ 
-			:dayRate => data[:dayCount] / (1 * 24),
-			:weekRate => data[:weekCount] / (7 * 24),
-			:monthRate => data[:monthCount] / (30 * 24)
+			:day_rate => data[:day_count] / (1 * 24),
+			:week_rate => data[:week_count] / (7 * 24),
+			:month_rate => data[:month_count] / (30 * 24)
 		})
 
 		puts 'Cache Refresh'
@@ -65,22 +63,22 @@ end
 
 get '/r/:subreddit' do |subreddit|
 
-	startDate = DB.subredditStart(subreddit)
-	halt 404, 'subreddit not found' if startDate.nil?
+	start_date = DB.subreddit_start(subreddit)
+	halt 404, 'subreddit not found' if start_date.nil?
 
-	locals = FileCache.new.cache "#{subreddit}.data.txt", 300 do
+	locals = FileCache.new.cache "#{subreddit}.data.txt", 5.minutes do
 		{
 			:subreddit => subreddit,
-			:countData => DB.subredditRevenue(subreddit),		
+			:count_data => DB.subreddit_revenue(subreddit),		
 		}
 	end
 
-	locals[:startDate] = startDate
+	locals[:start_date] = start_date
 	erb :subreddit, :layout => :_layout, :locals => locals
 end
 
 get '/gold/this_month' do
-	data = DB.revenueSince Time.now.beginning_of_month
+	data = DB.revenue_since Time.now.beginning_of_month
 	return [200, {'Content-type' => 'text/plain'}, data.to_s]
 end
 
