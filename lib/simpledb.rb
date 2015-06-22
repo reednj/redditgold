@@ -80,6 +80,21 @@ class SimpleDb
 			group by dl.date_index", @gold_cost, days].all;
 	end
 
+	def revenue_by_month(since_date=nil)
+		since_date ||= 52.weeks.ago
+
+		return self.db["select
+				year(date_index) as year,
+				month(date_index) as month,
+				count(c.comment_id) * ? as revenue
+			from date_list dl
+				inner join comments c on date(c.created_date) = date(dl.date_index)
+			where
+				dl.date_index < now() and
+				dl.date_index > ?
+			group by year(date_index), month(date_index)", @gold_cost, since_date].all;
+	end
+
 	def subreddit_start(subreddit)
 		self.db[:comments].where(:subreddit => subreddit).min(:created_date)
 	end
