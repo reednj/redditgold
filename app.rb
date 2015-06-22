@@ -17,6 +17,11 @@ set :erb, :escape_html => true
 GOLDCOST = 3.99
 DB = SimpleDb.new
 
+configure :development do
+	# run the db backup script to make sure the schema we have stored is up to date...
+	`./config/db/export-db.sh`
+end
+
 get '/' do
 	
 	fc = FileCache.new
