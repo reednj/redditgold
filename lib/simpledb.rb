@@ -96,6 +96,19 @@ class SimpleDb
 		created_date = self.last_comment.get(:created_date)
 		created_date.nil? ? -1 : created_date.age
 	end
+
+	def populate_dates
+		start_date = Date.parse('2000-01-01')
+		end_date = Date.parse('2030-12-31')
+
+		(start_date..end_date).each do |d|
+			self.db[:date_list].insert :date_index => d
+		end
+	end
+
+	def date_list_exist?
+		!self.db[:date_list].first.nil?
+	end
 end
 
 class Time

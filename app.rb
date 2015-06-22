@@ -17,9 +17,22 @@ set :erb, :escape_html => true
 GOLDCOST = 3.99
 DB = SimpleDb.new
 
+
+
 configure :development do
 	# run the db backup script to make sure the schema we have stored is up to date...
 	`./config/db/export-db.sh`
+
+end
+
+configure do
+
+	# we have a table with a list of dates we can join against to do reporting and so on.
+	# this should be populated the first time we start the app
+	if !DB.date_list_exist?
+		puts 'populating the date list. This might take a few minutes...'
+		DB.populate_dates
+	end
 end
 
 get '/' do
@@ -70,3 +83,5 @@ get '/gold/this_month' do
 	data = DB.revenueSince Time.now.beginning_of_month
 	return [200, {'Content-type' => 'text/plain'}, data.to_s]
 end
+
+
