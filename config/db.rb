@@ -1,3 +1,4 @@
+require 'ostruct'
 
 AppConfig = OpenStruct.new({
 	:db => OpenStruct.new({

@@ -1,4 +1,3 @@
-require "sinatra/reloader" if development?
 
 class SimpleDb
 	def initialize
