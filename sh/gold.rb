@@ -18,7 +18,7 @@ class App
 		response = reddit_data
 		comments = remove_duplicates response
 
-		insert_comments comments
+		insert_comments comments.reverse
 	end
 
 	def reddit_data
@@ -27,6 +27,8 @@ class App
 	end
 
 	def remove_duplicates(response)
+		last_id = last_comment_id
+
 		#foreach($data->data->children as $comment) {
 		#	if($comment->data->id == $last_comment) {
 		#		break;
@@ -39,43 +41,52 @@ class App
 	end
 
 	def insert_comments(comments)
-		#foreach(array_reverse($new_comments) as $comment) {
-		#	
-		#	print  $comment->data->id . "\n";
-		#
-		#	if(is_thread($comment->data->name)) {
-		#		$thread_id = $comment->data->name;
-		#		$title = $comment->data->title;
-		#		$body = $comment->data->is_self == 1 ? $comment->data->selftext : '';
-		#	} else {
-		#		$thread_id = $comment->data->link_id;
-		#		$title = $comment->data->link_title;
-		#		$body = $comment->data->body;
-		#	}
-		#
-		#	Comments::Insert(array(
-		#		'comment_id' => $comment->data->id,
-		#		'thread_id' => $thread_id,
-		#		'user' => $comment->data->author,
-		#		'subreddit' => $comment->data->subreddit,
-		#		'gold_count' => $comment->data->gilded,
-		#		'post_date' => date('c', $comment->data->created_utc)
-		#	));
-		#	
-		#	ESQL::Insert('comment_content', array(
-		#		'comment_id' => $comment->data->id,
-		#		'content' => $body,
-		#		'title' => $title
-		#	));
 
 		comments.each do |comment|
-			puts "#{comment[:data][:id]} (is_thread: #{thread? comment})"
+			insert_comment comment
+			puts "#{comment[:data][:id]}"
 		end
+
+	end
+
+	def insert_comment(comment)
+			data = comment[:data]
+
+			if thread? comment
+				thread_id = data[:name]
+				title = data[:title]
+				body = data[:is_self] == 1 ? data[:selftext] : ''
+			else
+				thread_id = data[:link_id]
+				title = data[:link_title]
+				body = data[:body]
+			end
+
+			@db.db[:comments].insert({
+				:comment_id => data[:id],
+				:thread_id => thread_id,
+				:user => data[:author],
+				:subreddit => data[:subreddit],
+				:gold_count => data[:gilded],
+				:post_date => Time.at(data[:created_utc]),
+			})
+
+			if !has_content? comment
+				@db.db[:comment_content].insert({
+					:comment_id => data[:id],
+					:content => body,
+					:title => title
+				})
+			end
 
 	end
 
 	def thread?(comment)
 		comment[:data][:name].start_with? 't3_'
+	end
+
+	def has_content?(comment)
+		!@db.db[:comment_content].where(:comment_id => comment[:data][:id]).first.nil?
 	end
 
 	def last_comment_id
