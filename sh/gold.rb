@@ -28,16 +28,14 @@ class App
 
 	def remove_duplicates(response)
 		last_id = last_comment_id
+		comments = []
 
-		#foreach($data->data->children as $comment) {
-		#	if($comment->data->id == $last_comment) {
-		#		break;
-		#	}
-		#
-		#	array_push($new_comments, $comment);
-		#}
+		response[:data][:children].each do |comment|
+			break if comment[:data][:id] == last_id
+			comments.push comment
+		end
 
-		response[:data][:children]
+		return comments
 	end
 
 	def insert_comments(comments)
