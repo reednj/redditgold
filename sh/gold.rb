@@ -42,41 +42,46 @@ class App
 
 		comments.each do |comment|
 			insert_comment comment
+			insert_comment_content comment
 			puts "#{comment[:data][:id]}"
 		end
 
 	end
 
 	def insert_comment(comment)
-			data = comment[:data]
+		data = comment[:data]
+		thread_id = thread?(comment) ? data[:name] : data[:link_id]
 
-			if thread? comment
-				thread_id = data[:name]
-				title = data[:title]
-				body = data[:is_self] == 1 ? data[:selftext] : ''
-			else
-				thread_id = data[:link_id]
-				title = data[:link_title]
-				body = data[:body]
-			end
+		@db.db[:comments].insert({
+			:comment_id => data[:id],
+			:thread_id => thread_id,
+			:user => data[:author],
+			:subreddit => data[:subreddit],
+			:gold_count => data[:gilded],
+			:post_date => Time.at(data[:created_utc]),
+		})
 
-			@db.db[:comments].insert({
+	end
+
+	def insert_comment_content(comment)
+		data = comment[:data]
+
+		if thread? comment
+			title = data[:title]
+			body = data[:is_self] == 1 ? data[:selftext] : ''
+		else
+			title = data[:link_title]
+			body = data[:body]
+		end
+
+		if !has_content? comment
+			
+			@db.db[:comment_content].insert({
 				:comment_id => data[:id],
-				:thread_id => thread_id,
-				:user => data[:author],
-				:subreddit => data[:subreddit],
-				:gold_count => data[:gilded],
-				:post_date => Time.at(data[:created_utc]),
+				:content => body,
+				:title => title
 			})
-
-			if !has_content? comment
-				@db.db[:comment_content].insert({
-					:comment_id => data[:id],
-					:content => body,
-					:title => title
-				})
-			end
-
+		end
 	end
 
 	def thread?(comment)
