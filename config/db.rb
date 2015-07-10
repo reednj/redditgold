@@ -1,9 +1,10 @@
+require 'ostruct'
 
 AppConfig = OpenStruct.new({
 	:db => OpenStruct.new({
 		:username => 'linkuser',
 		:password => '',
-		:host => 'localhost',
+		:host => '127.0.0.1',
 		:database => 'gold'
 	})
 })

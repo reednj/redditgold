@@ -1,9 +1,8 @@
-require "sinatra/reloader" if development?
 
 class SimpleDb
 	def initialize
 		@db = nil
-		@GoldCost = 3.99
+		@gold_cost = 3.99
 	end
 
 	def connect
@@ -26,15 +25,15 @@ class SimpleDb
 		end
 	end
 
-	def goldCount(days)
+	def gold_count(days)
 		return self.db.from(:comments).where{ created_date > Date.today - days }.count
 	end
 	
-	def revenueSince(date)
-		return self.db.from(:comments).where{ created_date > date }.count * @GoldCost
+	def revenue_since(date)
+		return self.db.from(:comments).where{ created_date > date }.count * @gold_cost
 	end
 
-	def topComments(days)
+	def top_comments(days)
 		return self.db["
 			select
 				c.comment_id,
@@ -51,10 +50,10 @@ class SimpleDb
 			group by c.comment_id
 			order by max(gold_count) desc
 			limit 100
-		", @GoldCost, days].all
+		", @gold_cost, days].all
 	end
 
-	def revenueBySubreddit(days)
+	def revenue_by_subreddit(days)
 
 		return self.db["select
 				subreddit,
@@ -63,10 +62,10 @@ class SimpleDb
 			where created_date > (now() - interval '?' day)
 			group by subreddit
 			order by count(*) desc
-			limit 12", @GoldCost, days].all;
+			limit 12", @gold_cost, days].all;
 	end
 
-	def revenueByDay(days)
+	def revenue_by_day(days)
 
 		return self.db["select
 				date_index as comment_date,
@@ -77,15 +76,30 @@ class SimpleDb
 			where
 				dl.date_index < now() &&
 				dl.date_index > now() - INTERVAL '?' day
-			group by dl.date_index", @GoldCost, days].all;
+			group by dl.date_index", @gold_cost, days].all;
 	end
 
-	def subredditStart(subreddit)
+	def revenue_by_month(since_date=nil)
+		since_date ||= 52.weeks.ago
+
+		return self.db["select
+				year(date_index) as year,
+				month(date_index) as month,
+				count(c.comment_id) * ? as revenue
+			from date_list dl
+				inner join comments c on date(c.created_date) = date(dl.date_index)
+			where
+				dl.date_index < now() and
+				dl.date_index > ?
+			group by year(date_index), month(date_index)", @gold_cost, since_date].all;
+	end
+
+	def subreddit_start(subreddit)
 		self.db[:comments].where(:subreddit => subreddit).min(:created_date)
 	end
 
-	def subredditRevenue(subreddit)
-		self.db[:comments].where(:subreddit => subreddit).count * @GoldCost
+	def subreddit_revenue(subreddit)
+		self.db[:comments].where(:subreddit => subreddit).count * @gold_cost
 	end
 
 	def last_comment
@@ -95,6 +109,19 @@ class SimpleDb
 	def last_comment_age
 		created_date = self.last_comment.get(:created_date)
 		created_date.nil? ? -1 : created_date.age
+	end
+
+	def populate_dates
+		start_date = Date.parse('2000-01-01')
+		end_date = Date.parse('2030-12-31')
+
+		(start_date..end_date).each do |d|
+			self.db[:date_list].insert :date_index => d
+		end
+	end
+
+	def date_list_exist?
+		!self.db[:date_list].first.nil?
 	end
 end
 
@@ -106,6 +133,7 @@ class Time
 	def age
 		Time.now - self
 	end
+
 end
 
 class Numeric
@@ -120,6 +148,41 @@ class Numeric
 	def to_minutes
 		self / 60.0
 	end
+end
+
+class Fixnum
+	def ago
+		Time.now - self
+	end
+
+	def from_now
+		Time.now + self
+	end
+
+	def seconds
+		self
+	end
+
+	def minutes
+		self * 60
+	end
+
+	def hours
+		self * 60.minutes
+	end
+
+	def days
+		self * 24.hours
+	end
+
+	def weeks
+		self * 7.days
+	end
+
+	alias minute minutes
+	alias hour hours
+	alias day days
+	alias week weeks
 end
 
 class String
