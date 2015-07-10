@@ -16,9 +16,8 @@ class App
 
 	def main
 		response = reddit_data
-		comments = remove_duplicates response
-
-		insert_comments comments.reverse
+		comments = response[:data][:children]
+		process_comments comments.reverse
 	end
 
 	def reddit_data
@@ -26,24 +25,23 @@ class App
 		return JSON.parse(data, :symbolize_names => true)
 	end
 
-	def remove_duplicates(response)
-		last_id = last_comment_id
-		comments = []
-
-		response[:data][:children].each do |comment|
-			break if comment[:data][:id] == last_id
-			comments.push comment
-		end
-
-		return comments
-	end
-
-	def insert_comments(comments)
+	def process_comments(comments)
 
 		comments.each do |comment|
-			insert_comment comment
-			insert_comment_content comment
-			puts "#{comment[:data][:id]}"
+			comment_id = comment[:data][:id]
+			gold = last_gold_for_comment(comment_id)
+
+			if gold.nil?
+				insert_comment comment
+				insert_comment_content comment
+				puts "#{comment_id} - new"
+			elsif gold[:gold_count] < comment[:data][:gilded]
+				insert_comment comment
+				puts "#{comment_id} - updated inserted"
+			else
+				puts "#{comment_id} - no change"
+			end
+
 		end
 
 	end
@@ -92,8 +90,8 @@ class App
 		!@db.db[:comment_content].where(:comment_id => comment[:data][:id]).first.nil?
 	end
 
-	def last_comment_id
-		@db.db[:comments].reverse_order(:gold_id).get :comment_id
+	def last_gold_for_comment(comment_id)
+		@db.db[:comments].where(:comment_id => comment_id).reverse_order(:gold_id).first
 	end
 end
 
