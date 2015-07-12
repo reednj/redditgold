@@ -79,10 +79,27 @@ class SimpleDb
 			group by dl.date_index", @gold_cost, days].all;
 	end
 
+	def revenue_by_week(since_date=nil)
+		since_date ||= 12.weeks.ago
+
+		return self.db["select
+				min(date_index) as date,
+				year(date_index) as year,
+				week(date_index) as month,
+				count(c.comment_id) * ? as revenue
+			from date_list dl
+				left join comments c on date(c.created_date) = date(dl.date_index)
+			where
+				dl.date_index < now() and
+				dl.date_index > ?
+			group by year(date_index), week(date_index)", @gold_cost, since_date].all;
+	end
+
 	def revenue_by_month(since_date=nil)
 		since_date ||= 52.weeks.ago
 
 		return self.db["select
+				min(date_index) as date,
 				year(date_index) as year,
 				month(date_index) as month,
 				count(c.comment_id) * ? as revenue

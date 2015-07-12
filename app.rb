@@ -4,6 +4,7 @@ require "sinatra/content_for"
 require "sinatra/reloader" if development?
 require 'sequel'
 require 'json'
+require 'yaml'
 require 'erubis'
 
 require './config/db'
@@ -19,8 +20,10 @@ DB = SimpleDb.new
 
 configure :development do
 	# run the db backup script to make sure the schema we have stored is up to date...
-	`./config/db/export-db.sh`
+	`./config/db/export-db.sh` if !Gem.win_platform?
 
+	also_reload './lib/simpledb.rb'
+	also_reload './lib/filecache.rb'
 end
 
 configure do
@@ -76,6 +79,15 @@ get '/r/:subreddit' do |subreddit|
 	locals[:start_date] = start_date
 	erb :subreddit, :layout => :_layout, :locals => locals
 end
+
+get '/gold/table' do
+	data = DB.revenue_by_week
+
+	erb :table, :layout => :_layout, :locals => {
+		:weekly_data => data
+	}
+end
+
 
 get '/gold/this_month' do
 	data = DB.revenue_since Time.now.beginning_of_month
