@@ -58,8 +58,14 @@ table.date-table td.numeric {
 	<tbody>
 		<% weekly_data.each_with_index do |week, i| %>
 		<% 
-			previous = weekly_data[i]
-			change = previous.nil? ? 0 : previous[:revenue] / week[:revenue]
+			previous = weekly_data[i-1]
+			change = 0
+
+			if !previous.nil?
+				change = previous[:revenue] / week[:revenue]
+				change = 1  if previous[:revenue] == 0 && week[:revenue] != 0
+				change = -1 if previous[:revenue] != 0 && week[:revenue] == 0
+			end
 		%>
 			<tr>
 				<td><%= week[:date].strftime('%d %b %Y') %></td>

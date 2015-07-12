@@ -173,7 +173,7 @@ class Numeric
 
 	def to_pct
 		return 0.to_pct if self.nan?
-		(self >= 0 ? '+' : '-') + ('%.2f' % (self * 100)) + ' %'
+		(self >= 0 ? '+' : '') + ('%.2f' % (self * 100)) + ' %'
 	end
 end
 
