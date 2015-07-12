@@ -39,6 +39,13 @@ table.date-table td.numeric {
 	text-align: right;
 }
 
+table.date-table td.up {
+	color: green;
+}
+
+table.date-table td.down {
+	color: red;
+}
 
 </style>
 
@@ -70,7 +77,7 @@ table.date-table td.numeric {
 			<tr>
 				<td><%= Time.parse(week[:date]).strftime('%d %b %Y') %></td>
 				<td class='numeric'><%= (week[:revenue] || 0).to_usd %></td>
-				<td class='numeric'><%= change.to_pct %></td>
+				<td class='numeric <%= change >= 0 ? 'up' : 'down' %>'><%= change.to_pct %></td>
 			</tr>
 		<% end %>
 	</tbody>
