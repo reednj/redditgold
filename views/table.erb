@@ -68,7 +68,7 @@ table.date-table td.numeric {
 			end
 		%>
 			<tr>
-				<td><%= week[:date].strftime('%d %b %Y') %></td>
+				<td><%= Time.parse(week[:date]).strftime('%d %b %Y') %></td>
 				<td class='numeric'><%= (week[:revenue] || 0).to_usd %></td>
 				<td class='numeric'><%= change.to_pct %></td>
 			</tr>
