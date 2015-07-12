@@ -81,7 +81,7 @@ get '/r/:subreddit' do |subreddit|
 end
 
 get '/gold/table' do
-	data = DB.revenue_by_week 16.weeks.ago
+	data = DB.revenue_by_week 12.weeks.ago
 
 	erb :table, :layout => :_layout, :locals => {
 		:weekly_data => data
