@@ -170,9 +170,18 @@ class Numeric
 	def to_minutes
 		self / 60.0
 	end
+
+	def to_pct
+		return 0.to_pct if self.nan?
+		(self >= 0 ? '+' : '-') + ('%.2f' % (self * 100)) + ' %'
+	end
 end
 
 class Fixnum
+	def nan?
+		false
+	end
+
 	def ago
 		Time.now - self
 	end

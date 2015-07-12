@@ -51,15 +51,20 @@ table.date-table td.numeric {
 		<tr>
 			<td>week</td>
 			<td>revenue</td>
-			<!--<td>change</td>-->
+			<td>change</td>
 		</tr>
 	</thead>
 
 	<tbody>
-		<% weekly_data.each do |week| %>
+		<% weekly_data.each_with_index do |week, i| %>
+		<% 
+			previous = weekly_data[i]
+			change = previous.nil? ? 0 : previous[:revenue] / week[:revenue]
+		%>
 			<tr>
 				<td><%= week[:date].strftime('%d %b %Y') %></td>
 				<td class='numeric'><%= (week[:revenue] || 0).to_usd %></td>
+				<td class='numeric'><%= change.to_pct %></td>
 			</tr>
 		<% end %>
 	</tbody>
