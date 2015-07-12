@@ -158,17 +158,13 @@ end
 
 class Numeric
 	def commas
-		self.to_s =~ /([^\.]*)(\..*)?/
-		int, dec = $1.reverse, $2 ? $2 : ""
-		while int.gsub!(/(,|\.|^)(\d{3})(\d)/, '\1\2,\3')
-		end
-		int.reverse + dec
+		self.to_s.commas
 	end
 
 	def to_usd(precision=2)
 		s = '$' + ("%.#{precision}f" % self.abs)
 		s = '-' + s if self < 0
-		return s
+		return s.commas
 	end
 
 	def to_minutes
@@ -212,6 +208,14 @@ class Fixnum
 end
 
 class String
+	def commas
+		self =~ /([^\.]*)(\..*)?/
+		int, dec = $1.reverse, $2 ? $2 : ""
+		while int.gsub!(/(,|\.|^)(\d{3})(\d)/, '\1\2,\3')
+		end
+		int.reverse + dec
+	end
+
 	def truncate(len, omission='...')
 		if self.length <= len
 			return self 
