@@ -62,7 +62,7 @@ table.date-table td.numeric {
 			change = 0
 
 			if !previous.nil?
-				change = previous[:revenue] / week[:revenue]
+				change = (previous[:revenue] / week[:revenue]) - 1
 				change = 1  if previous[:revenue] == 0 && week[:revenue] != 0
 				change = -1 if previous[:revenue] != 0 && week[:revenue] == 0
 			end
