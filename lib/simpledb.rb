@@ -142,6 +142,9 @@ class SimpleDb
 	end
 end
 
+#
+# These extensions should really be moved out into their own file...
+#
 class Time
 	def beginning_of_month
 		Time.parse(self.strftime("%Y-%m-01"))
@@ -160,6 +163,12 @@ class Numeric
 		while int.gsub!(/(,|\.|^)(\d{3})(\d)/, '\1\2,\3')
 		end
 		int.reverse + dec
+	end
+
+	def to_usd(precision=2)
+		s = '$' + ("%.#{precision}f" % self.abs)
+		s = '-' + s if self < 0
+		return s
 	end
 
 	def to_minutes

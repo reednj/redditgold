@@ -1,12 +1,69 @@
 
 <% content_for :header do %>
 
+<style type='text/css'>
+table.date-table {
+	font-size: 14pt;
+	border-collapse: collapse;
+	width: 80%;
+	max-width: 500px;
+	margin: 0 auto;
+}
+
+table.date-table thead td {
+	color: #ccc;
+	border-bottom: 1px solid #ccc;
+	font-weight: bold;
+	text-transform: uppercase;
+	text-align: center;
+}
+
+table.date-table td {
+	padding: 2px 4px;
+}
+
+table.date-table .month, table.date-table .day {
+	color: gray;
+	padding-right: 24px;
+}
+
+table.date-table tr.last, table.date-table tr.first {
+	font-style: italic;
+}
+
+table.date-table .amount {
+	text-align: right;
+}
+
+table.date-table td.numeric {
+	text-align: right;
+}
+
+
+</style>
+
 <% end %>
 
 <% content_for :body do %>
 
-<div>
-<pre><%== weekly_data.to_yaml %></pre>
-</div>
+<table class='date-table'>
+	<thead>
+		<tr>
+			<td>week</td>
+			<td>revenue</td>
+			<!--<td>change</td>-->
+		</tr>
+	</thead>
+
+	<tbody>
+		<% weekly_data.each do |week| %>
+			<tr>
+				<td><%= week[:date].strftime('%d %b %Y') %></td>
+				<td class='numeric'><%= (week[:revenue] || 0).to_usd %></td>
+			</tr>
+		<% end %>
+	</tbody>
+
+</table>
 
 <% end %>
