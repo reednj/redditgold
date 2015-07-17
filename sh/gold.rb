@@ -1,5 +1,6 @@
 #!/usr/bin/ruby
 
+require 'rubygems'
 require 'sequel'
 require 'yaml'
 require 'json'
