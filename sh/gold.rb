@@ -1,6 +1,8 @@
 #!/usr/bin/ruby
 
+ENV['GEM_PATH'] = File.expand_path('~/.gems') + ':/usr/lib/ruby/gems/1.8'
 require 'rubygems'
+
 require 'sequel'
 require 'yaml'
 require 'json'
