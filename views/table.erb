@@ -65,10 +65,13 @@ table.date-table td.down {
 	<tbody>
 		<% weekly_data.each_with_index do |week, i| %>
 		<% 
+			next if i == 0
 			previous = weekly_data[i-1]
 			change = 0
 
-			if !previous.nil?
+			# the first record is invalid because we don't have a full week always, and this means
+			# that the change % for the second week is also null
+			if !previous.nil? && i > 1
 				change = (week[:revenue] / previous[:revenue]) - 1
 				change = 1  if previous[:revenue] == 0 && week[:revenue] != 0
 				change = -1 if previous[:revenue] != 0 && week[:revenue] == 0
