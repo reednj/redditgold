@@ -187,7 +187,7 @@ class Summarizer
 			:summary_date => date,
 			:gold_count => gold_count,
 			:comment_count => comment_count,
-			:gold_profit => (gold_count * gold_cost).round(3)
+			:gold_profit => (gold_count * gold_cost)
 		)
 	end
 end
