@@ -47,7 +47,8 @@ class App
 				insert_comment_content comment
 				puts "#{comment_id} - new"
 			elsif gold[:gold_count] < comment[:data][:gilded]
-				insert_comment comment
+				gold_change = comment[:data][:gilded] - gold[:gold_count]
+				insert_comment comment, gold_change
 				puts "#{comment_id} - updated inserted"
 			else
 				puts "#{comment_id} - no change"
@@ -57,9 +58,14 @@ class App
 
 	end
 
-	def insert_comment(comment)
+	def insert_comment(comment, gold_change=nil)
 		data = comment[:data]
 		thread_id = thread?(comment) ? data[:name] : data[:link_id]
+		
+		# in order to make summarizing the data easier, we don't just want the total
+		# gold that a comment has, we want to get the change since the last entry as well
+		# this will let us calculate $/month with less fucking around
+		gold_change ||= data[:gilded]
 
 		@db.db[:comments].insert({
 			:comment_id => data[:id],
@@ -67,6 +73,7 @@ class App
 			:user => data[:author],
 			:subreddit => data[:subreddit],
 			:gold_count => data[:gilded],
+			:gold_change => gold_change,
 			:post_date => Time.at(data[:created_utc]),
 		})
 
