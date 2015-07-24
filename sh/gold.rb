@@ -164,7 +164,7 @@ class Summarizer
 	# date of the last summary, when this gets to a certain age, then we run the summary again
 	# - we don't want to have to have a separate cron job for it
 	def last_summary
-		@db[:gold_summary].reverse_order(:created_date).get(:created_date)
+		@db[:gold_summary].reverse_order(:summary_date).get(:created_date)
 	end
 
 	# we want to get the oldest summary as well so that we can slowly fill 
