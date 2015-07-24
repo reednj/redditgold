@@ -48,6 +48,20 @@ CREATE TABLE `date_list` (
   PRIMARY KEY (`date_index`)
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 /*!40101 SET character_set_client = @saved_cs_client */;
+DROP TABLE IF EXISTS `gold_summary`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `gold_summary` (
+  `summary_id` int(11) NOT NULL AUTO_INCREMENT,
+  `summary_date` date NOT NULL,
+  `gold_count` int(11) NOT NULL,
+  `comment_count` int(11) NOT NULL,
+  `gold_profit` double NOT NULL,
+  `created_date` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  PRIMARY KEY (`summary_id`),
+  UNIQUE KEY `summary_date` (`summary_date`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+/*!40101 SET character_set_client = @saved_cs_client */;
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
 
 /*!40101 SET SQL_MODE=@OLD_SQL_MODE */;
