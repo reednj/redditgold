@@ -179,8 +179,15 @@ class Summarizer
 
 	def gold_for_day(date)
 		dataset = @db[:comments].where('date(created_date) = ?', date)
-		gold_count = dataset.count
+
+		# there are two ways of getting to total gold sold. The gold_change sum
+		# is more accurate, but we might not have data for it. Take which ever is the 
+		# biggest number - this will be the correct one
+		gold_count = [dataset.count, dataset.sum(:gold_change) || 0].max
+
+
 		comment_count = dataset.distinct(:comment_id).count
+
 		return { :gold_count => gold_count, :comment_count => comment_count }
 	end
 
