@@ -47,44 +47,93 @@ table.date-table td.down {
 	color: red;
 }
 
+.section {
+	margin-bottom: 8px;
+}
+
+.section.last {
+	margin-bottom: 0;
+}
+
+
 </style>
 
 <% end %>
 
 <% content_for :body do %>
 
-<table class='date-table'>
-	<thead>
-		<tr>
-			<td>week</td>
-			<td>revenue</td>
-			<td>change</td>
-		</tr>
-	</thead>
-
-	<tbody>
-		<% weekly_data.each_with_index do |week, i| %>
-		<% 
-			next if i == 0
-			previous = weekly_data[i-1]
-			change = 0
-
-			# the first record is invalid because we don't have a full week always, and this means
-			# that the change % for the second week is also null
-			if !previous.nil? && i > 1
-				change = (week[:revenue] / previous[:revenue]) - 1
-				change = 1  if previous[:revenue] == 0 && week[:revenue] != 0
-				change = -1 if previous[:revenue] != 0 && week[:revenue] == 0
-			end
-		%>
+<div class='section last'>
+	<table class='date-table'>
+		<thead>
 			<tr>
-				<td><%= Time.parse(week[:date]).strftime('%d %b %Y') %></td>
-				<td class='numeric'><%= (week[:revenue] || 0).to_usd %></td>
-				<td class='numeric <%= change >= 0 ? 'up' : 'down' %>'><%= change.to_pct %></td>
+				<td>by month</td>
+				<td>revenue</td>
+				<td>change</td>
 			</tr>
-		<% end %>
-	</tbody>
+		</thead>
 
-</table>
+		<tbody>
+			<% monthly_data.each_with_index do |month, i| %>
+			<% 
+				next if i == 0
+				previous = monthly_data[i-1]
+				change = 0
+
+				# the first record is invalid because we don't have a full month always, and this means
+				# that the change % for the second month is also null
+				if !previous.nil? && i > 1
+					change = (month[:revenue] / previous[:revenue]) - 1
+					change = 1  if previous[:revenue] == 0 && month[:revenue] != 0
+					change = -1 if previous[:revenue] != 0 && month[:revenue] == 0
+				end
+			%>
+				<tr>
+					<td><%= Time.parse(month[:date]).strftime('%d %b %Y') %></td>
+					<td class='numeric'><%= (month[:revenue] || 0).to_usd %></td>
+					<td class='numeric <%= change >= 0 ? 'up' : 'down' %>'><%= change.to_pct %></td>
+				</tr>
+			<% end %>
+		</tbody>
+
+	</table>
+</div>
+
+<div class='section'>
+	<table class='date-table'>
+		<thead>
+			<tr>
+				<td>by week</td>
+				<td>revenue</td>
+				<td>change</td>
+			</tr>
+		</thead>
+
+		<tbody>
+			<% weekly_data.each_with_index do |week, i| %>
+			<% 
+				next if i == 0
+				previous = weekly_data[i-1]
+				change = 0
+
+				# the first record is invalid because we don't have a full week always, and this means
+				# that the change % for the second week is also null
+				if !previous.nil? && i > 1
+					change = (week[:revenue] / previous[:revenue]) - 1
+					change = 1  if previous[:revenue] == 0 && week[:revenue] != 0
+					change = -1 if previous[:revenue] != 0 && week[:revenue] == 0
+				end
+			%>
+				<tr>
+					<td><%= Time.parse(week[:date]).strftime('%d %b %Y') %></td>
+					<td class='numeric'><%= (week[:revenue] || 0).to_usd %></td>
+					<td class='numeric <%= change >= 0 ? 'up' : 'down' %>'><%= change.to_pct %></td>
+				</tr>
+			<% end %>
+		</tbody>
+
+	</table>
+</div>
+
+
 
 <% end %>

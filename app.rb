@@ -81,16 +81,23 @@ get '/r/:subreddit' do |subreddit|
 end
 
 get '/gold/table' do
-	locals = FileCache.new.cache('table.data.txt', 15.minutes) do  
+	locals = FileCache.new.cache('table.data.txt', 1) do  
 		data = { 
-			:weekly_data => DB.revenue_by_week(26.weeks.ago)
+			:weekly_data => DB.revenue_by_week(12.weeks.ago),
+			:monthly_data => DB.revenue_by_month(52.weeks.ago)
 		}
 
-		data[:weekly_data].map! { |w| 
+		data[:weekly_data].map! do |w| 
 			w[:date] = w[:date].to_s
 			w[:revenue] = (w[:revenue] || 0).to_f
 			w
-		}
+		end
+
+		data[:monthly_data].map! do |w| 
+			w[:date] = w[:date].to_s
+			w[:revenue] = (w[:revenue] || 0).to_f
+			w
+		end
 
 		data
 	end
