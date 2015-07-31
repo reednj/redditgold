@@ -17,14 +17,14 @@ class FileCache
 	# Cache the object produced by the passed block in +filename+
 	# If the file already exists, and the mtime is less than the max
 	# age, then the file will be parsed and returned
-	def cache(filename, max_age)
-		data = self.from_cache(filename, max_age)
+	def cache(filename, max_age, options=nil)
+		data = self.from_cache(filename, max_age, options)
 		
 		if(data != nil)
 			return data
 		else
 			data = yield
-			self.to_cache filename, data
+			self.to_cache filename, data, options
 			return data
 		end
 
