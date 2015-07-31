@@ -29,6 +29,7 @@ CREATE TABLE `comments` (
   `user` varchar(128) NOT NULL,
   `subreddit` varchar(128) NOT NULL,
   `gold_count` int(11) NOT NULL DEFAULT '1',
+  `gold_change` int(11) DEFAULT NULL,
   `post_date` timestamp NULL DEFAULT NULL,
   `created_date` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
   PRIMARY KEY (`gold_id`),

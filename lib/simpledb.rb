@@ -86,13 +86,13 @@ class SimpleDb
 				min(date_index) as date,
 				year(date_index) as year,
 				week(date_index) as month,
-				count(c.comment_id) * ? as revenue
+				COALESCE(sum(g.gold_profit),0) as revenue
 			from date_list dl
-				left join comments c on date(c.created_date) = date(dl.date_index)
+				left join gold_summary g on g.summary_date = date(dl.date_index)
 			where
 				dl.date_index < now() and
 				dl.date_index > ?
-			group by year(date_index), week(date_index)", @gold_cost, since_date].all;
+			group by year(date_index), week(date_index)", since_date].all;
 	end
 
 	def revenue_by_month(since_date=nil)
@@ -102,13 +102,13 @@ class SimpleDb
 				min(date_index) as date,
 				year(date_index) as year,
 				month(date_index) as month,
-				count(c.comment_id) * ? as revenue
+				COALESCE(sum(g.gold_profit),0) as revenue
 			from date_list dl
-				inner join comments c on date(c.created_date) = date(dl.date_index)
+				left join gold_summary g on g.summary_date = date(dl.date_index)
 			where
 				dl.date_index < now() and
 				dl.date_index > ?
-			group by year(date_index), month(date_index)", @gold_cost, since_date].all;
+			group by year(date_index), month(date_index)", since_date].all;
 	end
 
 	def subreddit_start(subreddit)
