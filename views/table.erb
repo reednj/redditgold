@@ -88,7 +88,7 @@ table.date-table td.down {
 				end
 			%>
 				<tr>
-					<td><%= Time.parse(month[:date]).strftime('%d %b %Y') %></td>
+					<td><%= month[:date].strftime('%d %b %Y') %></td>
 					<td class='numeric'><%= (month[:revenue] || 0).to_usd %></td>
 					<td class='numeric <%= change >= 0 ? 'up' : 'down' %>'><%= change.to_pct %></td>
 				</tr>
@@ -124,7 +124,7 @@ table.date-table td.down {
 				end
 			%>
 				<tr>
-					<td><%= Time.parse(week[:date]).strftime('%d %b %Y') %></td>
+					<td><%= week[:date].strftime('%d %b %Y') %></td>
 					<td class='numeric'><%= (week[:revenue] || 0).to_usd %></td>
 					<td class='numeric <%= change >= 0 ? 'up' : 'down' %>'><%= change.to_pct %></td>
 				</tr>
