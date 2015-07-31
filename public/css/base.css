@@ -58,7 +58,7 @@ html, body {
 }
 
 .header .title > a {
-	color: black !important;
+	color: inherit;
 	text-decoration: none;
 }
 
