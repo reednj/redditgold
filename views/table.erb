@@ -47,6 +47,12 @@ table.date-table td.down {
 	color: red;
 }
 
+table.date-table tr.last td.up,
+table.date-table tr.last td.down  {
+	color: black;
+	text-align: center;
+}
+
 .section {
 	margin-bottom: 8px;
 }
@@ -77,6 +83,7 @@ table.date-table td.down {
 			<% 
 				next if i == 0
 				previous = monthly_data[i-1]
+				is_last = i == monthly_data.length - 1
 				change = 0
 
 				# the first record is invalid because we don't have a full month always, and this means
@@ -87,10 +94,10 @@ table.date-table td.down {
 					change = -1 if previous[:revenue] != 0 && month[:revenue] == 0
 				end
 			%>
-				<tr>
+				<tr class='<%= is_last ? 'last' : '' %>'>
 					<td><%= month[:date].strftime('%d %b %Y') %></td>
 					<td class='numeric'><%= (month[:revenue] || 0).to_usd %></td>
-					<td class='numeric <%= change >= 0 ? 'up' : 'down' %>'><%= change.to_pct %></td>
+					<td class='numeric <%= change >= 0 ? 'up' : 'down' %>'><%= is_last ? '-' : change.to_pct %></td>
 				</tr>
 			<% end %>
 		</tbody>
@@ -113,6 +120,7 @@ table.date-table td.down {
 			<% 
 				next if i == 0
 				previous = weekly_data[i-1]
+				is_last = i == weekly_data.length - 1
 				change = 0
 
 				# the first record is invalid because we don't have a full week always, and this means
@@ -123,10 +131,10 @@ table.date-table td.down {
 					change = -1 if previous[:revenue] != 0 && week[:revenue] == 0
 				end
 			%>
-				<tr>
+				<tr class='<%= is_last ? 'last' : '' %>'>
 					<td><%= week[:date].strftime('%d %b %Y') %></td>
 					<td class='numeric'><%= (week[:revenue] || 0).to_usd %></td>
-					<td class='numeric <%= change >= 0 ? 'up' : 'down' %>'><%= change.to_pct %></td>
+					<td class='numeric <%= change >= 0 ? 'up' : 'down' %>'><%= is_last ? '-' : change.to_pct %></td>
 				</tr>
 			<% end %>
 		</tbody>
