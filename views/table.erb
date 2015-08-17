@@ -72,6 +72,43 @@ table.date-table tr.last td.down  {
 	<table class='date-table'>
 		<thead>
 			<tr>
+				<td>by year</td>
+				<td>revenue</td>
+				<td>change</td>
+			</tr>
+		</thead>
+
+		<tbody>
+			<% yearly_data.each_with_index do |year, i| %>
+			<% 
+				next if i == 0
+				previous = yearly_data[i-1]
+				is_last = i == yearly_data.length - 1
+				change = 0
+
+				# the first record is invalid because we don't have a full year always, and this means
+				# that the change % for the second year is also null
+				if !previous.nil? && i > 1
+					change = (year[:revenue] / previous[:revenue]) - 1
+					change = 1  if previous[:revenue] == 0 && year[:revenue] != 0
+					change = -1 if previous[:revenue] != 0 && year[:revenue] == 0
+				end
+			%>
+				<tr class='<%= is_last ? 'last' : '' %>'>
+					<td><%= year[:date].strftime('%Y') %></td>
+					<td class='numeric'><%= (year[:revenue] || 0).to_usd %></td>
+					<td class='numeric <%= change >= 0 ? 'up' : 'down' %>'><%= is_last ? '-' : change.to_pct %></td>
+				</tr>
+			<% end %>
+		</tbody>
+
+	</table>
+</div>
+
+<div class='section'>
+	<table class='date-table'>
+		<thead>
+			<tr>
 				<td>by month</td>
 				<td>revenue</td>
 				<td>change</td>
@@ -95,7 +132,7 @@ table.date-table tr.last td.down  {
 				end
 			%>
 				<tr class='<%= is_last ? 'last' : '' %>'>
-					<td><%= month[:date].strftime('%d %b %Y') %></td>
+					<td><%= month[:date].strftime('%b %Y') %></td>
 					<td class='numeric'><%= (month[:revenue] || 0).to_usd %></td>
 					<td class='numeric <%= change >= 0 ? 'up' : 'down' %>'><%= is_last ? '-' : change.to_pct %></td>
 				</tr>

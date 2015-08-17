@@ -111,6 +111,21 @@ class SimpleDb
 			group by year(date_index), month(date_index)", since_date].all;
 	end
 
+	def revenue_by_year(since_date=nil)
+		since_date ||= Time.parse('2012-12-31')
+
+		return self.db["select
+				min(date_index) as date,
+				year(date_index) as year,
+				COALESCE(sum(g.gold_profit),0) as revenue
+			from date_list dl
+				left join gold_summary g on g.summary_date = date(dl.date_index)
+			where
+				dl.date_index < now() and
+				dl.date_index >= ?
+			group by year(date_index)", since_date].all;
+	end
+
 	def subreddit_start(subreddit)
 		self.db[:comments].where(:subreddit => subreddit).min(:created_date)
 	end

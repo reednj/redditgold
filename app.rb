@@ -85,7 +85,8 @@ get '/gold/table' do
 	FileCache.new.cache('table.data.txt', 5.minutes, :plain_text => true) do  
 		erb :table, :layout => :_layout, :locals => {
 			:weekly_data => DB.revenue_by_week(12.weeks.ago),
-			:monthly_data => DB.revenue_by_month(52.weeks.ago)
+			:monthly_data => DB.revenue_by_month(52.weeks.ago),
+			:yearly_data => DB.revenue_by_year
 		}
 	end
 
