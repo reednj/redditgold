@@ -25,12 +25,16 @@ class SimpleDb
 		end
 	end
 
-	def gold_count(days)
-		return self.db.from(:comments).where{ created_date > Date.today - days }.count
+	def gold_count(day_count)
+		return gold_since(Time.now - day_count.days)
 	end
 	
+	def gold_since(date)
+		return self.db.from(:comments).where{ created_date > date }.sum(:gold_change) || 0
+	end
+
 	def revenue_since(date)
-		return self.db.from(:comments).where{ created_date > date }.count * @gold_cost
+		return gold_since(date) * @gold_cost
 	end
 
 	def top_comments(days)
@@ -70,7 +74,7 @@ class SimpleDb
 		return self.db["select
 				date_index as comment_date,
 				day(date_index) as day,
-				count(c.comment_id) * ? as revenue
+				COALESCE(sum(c.gold_change),0) * ? as revenue
 			from date_list dl
 				inner join comments c on date(c.created_date) = dl.date_index
 			where
