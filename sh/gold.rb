@@ -7,6 +7,7 @@ require 'sequel'
 require 'yaml'
 require 'json'
 require 'rest-client'
+require 'cgi'
 
 require '../config/db.rb'
 require '../lib/simpledb'
@@ -84,7 +85,7 @@ class App
 
 		if thread? comment
 			title = data[:title]
-			body = data[:is_self] == 1 ? data[:selftext] : ''
+			body = (!!data[:is_self]) ? data[:selftext] : ''
 		else
 			title = data[:link_title]
 			body = data[:body]
@@ -94,8 +95,8 @@ class App
 			
 			@db.db[:comment_content].insert({
 				:comment_id => data[:id],
-				:content => body,
-				:title => title
+				:content => CGI.unescapeHTML(body),
+				:title => CGI.unescapeHTML(title)
 			})
 		end
 	end
