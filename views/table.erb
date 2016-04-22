@@ -86,6 +86,10 @@ table.date-table tr.last td.down  {
 				is_last = i == yearly_data.length - 1
 				change = 0
 
+				if is_last
+					year_end_prediction = 365 / Date.today.yday * (year[:revenue] || 0)
+				end
+
 				# the first record is invalid because we don't have a full year always, and this means
 				# that the change % for the second year is also null
 				if !previous.nil? && i > 1
@@ -99,6 +103,14 @@ table.date-table tr.last td.down  {
 					<td class='numeric'><%= (year[:revenue] || 0).to_usd %></td>
 					<td class='numeric <%= change >= 0 ? 'up' : 'down' %>'><%= is_last ? '-' : change.to_pct %></td>
 				</tr>
+
+				<% if is_last %>
+					<tr class='last'>
+						<td style='padding-left: 16px;'><%= year[:date].strftime('%Y') %> (predicted)</td>
+						<td class='numeric'><%= year_end_prediction.to_usd %></td>
+						<td></td>
+					</tr>
+				<% end %>
 			<% end %>
 		</tbody>
 
