@@ -87,7 +87,7 @@ table.date-table tr.last td.down  {
 				change = 0
 
 				if is_last
-					year_end_prediction = 365 / Date.today.yday * (year[:revenue] || 0)
+					year_end_prediction = 365.0 / Date.today.yday * (year[:revenue] || 0)
 				end
 
 				# the first record is invalid because we don't have a full year always, and this means
