@@ -6,7 +6,7 @@ require 'json'
 require 'twitter'
 
 require '../lib/model'
-
+require '../lib/twitter-config'
 
 class App
 
