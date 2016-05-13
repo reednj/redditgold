@@ -1,5 +1,45 @@
 require 'sequel'
 
+# NotesTableHelpers
+#
+# these helpers are used on Sequel::Model classes to make it easier to
+# manage 'notes' tables. Notes tables are a useful pattern to extend the 
+# schema of a table, if only a small fraction of the rows require a certain
+# field.
+#
+# For example, given a table like this:
+#
+# 	comments
+# 	 - comment_id int
+# 	 - user_id:int
+# 	 - context:string
+# 	 - created_date:time
+#
+# we could create a notes table with the following schema:
+#
+# 	comment_notes
+# 	 - comment_id:int
+# 	 - field_name:string
+# 	 - field_value:string
+#
+# Managing these notes through a standard association is not that pleasant. This
+# module makes it easy to read and write to these notes fields
+#
+# Here is an example using the previous schema:
+#
+# 	class CommentNote < Sequel::Model
+# 	end
+#
+# 	class Comment < Sequel::Model
+#		include NotesTableHelpers
+#		add_notes_assoc 'CommentNote'
+#		add_notes_field :spam_rating
+#		add_notes_field :hide_comment
+# 	end
+#
+# dedicated methods can be added using the :add_notes_field: method. All the notes
+# can also be accessed as a hash through :notes:
+#
 module NotesTableHelpers
 	def self.included(base)
  		base.extend ClassMethods
