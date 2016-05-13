@@ -26,10 +26,6 @@ class CommentContent < Sequel::Model(:comment_content)
 	add_notes_assoc 'CommentNote'
 	add_notes_field :was_tweeted
 
-	def self.notes_class
-		CommentNote
-	end
-
 	def gold_count
 		@gold_count ||= comments_dataset.max(:gold_count)
 	end

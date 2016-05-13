@@ -27,12 +27,12 @@ module NotesTableHelpers
 	end
 
 	def add_note(field_name, field_value)
-		unless self.class.respond_to? :notes_class
+		if self.class._notes_class_name.nil?
 			raise 'notes_class method required to add_notes' 
 		end
 
 		# todo: this will fail if the assoc. name is non-standard...
-		add_raw_note(self.class.notes_class.new { |n|
+		add_raw_note(self.class._notes_class.new { |n|
 			n.field_name = field_name.to_s
 			n.field_value = field_value
 		})
@@ -85,7 +85,16 @@ module NotesTableHelpers
 		end
 
 		def add_notes_assoc(class_name)
-			one_to_many :raw_notes, :class => class_name.to_s, :key => primary_key
+			@notes_class_name = class_name.to_s
+			one_to_many :raw_notes, :class => _notes_class_name, :key => primary_key
+		end
+
+		def _notes_class_name
+			@notes_class_name
+		end
+
+		def _notes_class
+			Object.const_get _notes_class_name
 		end
 	end
 end
