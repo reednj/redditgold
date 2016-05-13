@@ -33,7 +33,7 @@ class App
 	end
 
 	def reddit_data
-		data = RestClient.get 'http://www.reddit.com/r/all/comments/gilded.json?count=50'
+		data = RestClient.get 'http://www.reddit.com/r/all/comments/gilded.json?count=50', :user_agent => "reddit-gold agent"
 		return JSON.parse(data, :symbolize_names => true)
 	end
 
