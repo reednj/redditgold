@@ -40,7 +40,7 @@ require 'sequel'
 # dedicated methods can be added using the :add_notes_field: method. All the notes
 # can also be accessed as a hash through :notes:
 #
-module NotesTableHelpers
+module Sequel::Model::NotesTableHelpers
 	def self.included(base)
  		base.extend ClassMethods
 	end
