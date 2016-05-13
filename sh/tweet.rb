@@ -107,18 +107,34 @@ end
 class App
 
 	def main
-		client = Twitter::REST::Client.new twitter_config('reednj', :path => '../config/twitter.yaml')
-		comment_ids = SDB.top_comments(7).first(5).map{|c| c[:comment_id] }
-		comment_ids.each do |id|
-			c = CommentContent[id]
-			puts c.to_tweet
+		comment = first_untweeted_comment
+
+		if comment.nil?
+			puts 'nothing to tweet'
+			return
 		end
 
-		client.update CommentContent[comment_ids.first].to_tweet
+		# tweet the thread / comment, and print it to the 
+		# console
+		tweet_content = comment.to_tweet
+		twitter_client.update tweet_content 
+		puts tweet_content
+		
+		# now mark the comment as tweeted so we won't send it out again
+		comment.was_tweeted = 1
+		comment.save_changes
 	end
 
-	def first_comment
+	def first_untweeted_comment
+		comment_ids = SDB.top_comments(7).first(5).map{|c| c[:comment_id] }
+		comments = CommentContent.where(:comment_id => comment_ids).all
+		comments.select {|c| !c.tweeted? }.first
+	end
 
+	def twitter_client
+		username = 'reednj'
+		config_file = '../config/twitter.yaml'
+		@twitter_client ||= Twitter::REST::Client.new twitter_config(username, :path => config_file)
 	end
 
 	def twitter_config(username, options = {})
