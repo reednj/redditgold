@@ -19,6 +19,16 @@ CREATE TABLE `comment_content` (
   PRIMARY KEY (`comment_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 /*!40101 SET character_set_client = @saved_cs_client */;
+DROP TABLE IF EXISTS `comment_notes`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `comment_notes` (
+  `comment_id` varchar(64) NOT NULL DEFAULT '',
+  `field_name` varchar(32) NOT NULL DEFAULT '',
+  `field_value` varchar(64) DEFAULT NULL,
+  PRIMARY KEY (`comment_id`,`field_name`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+/*!40101 SET character_set_client = @saved_cs_client */;
 DROP TABLE IF EXISTS `comments`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8 */;
