@@ -5,8 +5,8 @@ require 'yaml'
 require 'json'
 require 'twitter'
 
-require '../lib/model'
-require '../lib/twitter-config'
+require_relative '../lib/model'
+require_relative '../lib/twitter-config'
 
 class App
 
