@@ -116,7 +116,7 @@ module Twitter::Config
 		end
 
 		def self._twitter_config_file(path = nil)
-			result = [path, '~/.twitter.yaml', './twitter.yaml'].compact.select{ |f| File.exist? f }.first
+			result = [path, "#{ENV['HOME']}/.twitter.yaml", './twitter.yaml'].compact.select{ |f| File.exist? f }.first
 			raise 'could not find twitter config' if result.nil?
 			return result
 		end
