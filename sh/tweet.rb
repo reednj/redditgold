@@ -11,6 +11,7 @@ require '../lib/twitter-config'
 class App
 
 	def main
+		@twitter_user = 'reddit_stream'
 		comment = first_untweeted_comment
 
 		if comment.nil?
@@ -37,9 +38,8 @@ class App
 	end
 
 	def twitter_client
-		username = 'reednj'
 		config_file = '../config/twitter.yaml'
-		@twitter_client ||= Twitter::REST::Client.from_config(username, :path => config_file)
+		@twitter_client ||= Twitter::REST::Client.from_config(@twitter_user, :path => config_file)
 	end
 
 
