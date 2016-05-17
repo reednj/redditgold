@@ -1,4 +1,12 @@
-
+# The config file should have the following format:
+#
+#---
+# reednj:
+#   consumer_key: N5FP6mMnW6cBGdtBsBTLgE81s
+#   consumer_secret: LrCTb5Y8JcO5gTvBswACu48p3IqmFPgX2yOG3c45GBh4MtmR1X
+#   access_token: 11646642-5jJ7aL5Iq34BA9ZkuiewkkN7GxrTK1v69CnlUcVy1T
+#   access_token_secret: dJ3D13bxuN0LvTEVN2JJhvDSmRk8CsgFFB1jGy7MARMJV
+#
 module Twitter::Config
 	class YAMLConfig
 		def self.for_user(username, options = {})
