@@ -76,7 +76,7 @@ class SimpleDb
 				day(date_index) as day,
 				COALESCE(sum(c.gold_change),0) * ? as revenue
 			from date_list dl
-				inner join comments c on date(c.created_date) = dl.date_index
+				inner join comments c on date(c.created_date) = date(dl.date_index)
 			where
 				dl.date_index < now() &&
 				dl.date_index > now() - INTERVAL '?' day
