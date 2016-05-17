@@ -11,7 +11,7 @@ require_relative '../lib/twitter-config'
 class App
 
 	def main
-		@twitter_user = 'reddit_stream'
+		@twitter_user = 'top_reddit_gold'
 		comment = first_untweeted_comment
 
 		if comment.nil?
