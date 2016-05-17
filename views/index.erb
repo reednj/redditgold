@@ -112,6 +112,10 @@ var $ = function(id) {
 
 	<div class='block comments last'>
 		<h2>Top Comments this Week</h2>
+		<div>
+			<a class="twitter-follow-button" href="https://twitter.com/top_reddit_gold">Follow @Top_Reddit_Gold</a>
+		</div>
+
 		<% 
 
 		top_comments.each do |comment|
@@ -169,6 +173,22 @@ var $ = function(id) {
 
 	
 -->
+<script>window.twttr = (function(d, s, id) {
+  var js, fjs = d.getElementsByTagName(s)[0],
+    t = window.twttr || {};
+  if (d.getElementById(id)) return t;
+  js = d.createElement(s);
+  js.id = id;
+  js.src = "https://platform.twitter.com/widgets.js";
+  fjs.parentNode.insertBefore(js, fjs);
+ 
+  t._e = [];
+  t.ready = function(f) {
+    t._e.push(f);
+  };
+  return t;
+}(document, "script", "twitter-wjs"));</script>
+
 <% end %>
 
 <% content_for :footer do %>
