@@ -136,6 +136,23 @@ module Sequel::Model::NotesTableHelpers
 		def _notes_class
 			Object.const_get _notes_class_name
 		end
+
+		def create_notes_table?(options = {})
+			column_name = (options[:key] || primary_key || 'id').to_sym
+			column_type = 'int'
+			notes_table_name = options[:table_name].to_sym
+
+			schema = db.schema table_name
+			pk = schema.select {|c| !!c[1][:primary_key] }.first[1]
+			column_type = pk[:db_type]
+
+			db.create_table? notes_table_name.to_sym do
+				column column_name, column_type
+				String :field_name, :size => 32
+				String :field_value, :size => 64
+				primary_key [column_name, :field_name]
+			end
+		end
 	end
 end
 

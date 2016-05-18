@@ -5,16 +5,6 @@ require_relative './sequel-notes_tables'
 SDB = SimpleDb.new 
 DB = SDB.connect
 
-DB.create_table? :comment_notes do 
-	String :comment_id, :size => 64
-	String :field_name, :size => 32
-	String :field_value, :size => 64
-	primary_key [:comment_id, :field_name]
-end
-
-class CommentNote < Sequel::Model
-end
-
 class Comment < Sequel::Model
 	many_to_one :content, :class => 'CommentContent', :key => :comment_id
 end
@@ -23,6 +13,7 @@ class CommentContent < Sequel::Model(:comment_content)
 	one_to_many :comments, :key => :comment_id, :order_by => :post_date
 
 	include NotesTableHelpers
+	create_notes_table? :table_name => :comment_notes
 	add_notes_assoc 'CommentNote'
 	add_notes_field :was_tweeted
 
@@ -91,4 +82,7 @@ class CommentContent < Sequel::Model(:comment_content)
 	def tweeted?
 		was_tweeted.to_i == 1
 	end
+end
+
+class CommentNote < Sequel::Model
 end
