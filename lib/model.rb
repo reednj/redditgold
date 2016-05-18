@@ -13,7 +13,7 @@ class CommentContent < Sequel::Model(:comment_content)
 	one_to_many :comments, :key => :comment_id, :order_by => :post_date
 
 	include NotesTableHelpers
-	create_notes_table? :table_name => :comment_notes
+	create_notes_table? :name => :comment_notes
 	add_notes_assoc 'CommentNote'
 	add_notes_field :was_tweeted
 

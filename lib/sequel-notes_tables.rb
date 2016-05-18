@@ -138,9 +138,9 @@ module Sequel::Model::NotesTableHelpers
 		end
 
 		def create_notes_table?(options = {})
+			notes_table_name = (options[:name] || (table_name.to_s + '_notes')).to_sym
 			column_name = (options[:key] || primary_key || 'id').to_sym
 			column_type = 'int'
-			notes_table_name = options[:table_name].to_sym
 
 			schema = db.schema table_name
 			pk = schema.select {|c| !!c[1][:primary_key] }.first[1]
