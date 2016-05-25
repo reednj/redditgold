@@ -72,7 +72,7 @@ class CommentContent < Sequel::Model(:comment_content)
 		link_len = 25
 
 		prefix = "#{gold_count}\u2605 [/r/#{subreddit}] "
-		suffix = " #redditgold"
+		suffix = " #reddit"
 		text_len = tweet_len - link_len - prefix.length - suffix.length
 		raise 'no room for tweet content' if text_len <= 0
 
