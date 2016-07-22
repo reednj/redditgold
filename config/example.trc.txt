@@ -1,0 +1,20 @@
+---
+configuration:
+  default_profile:
+  - top_reddit_gold
+  - N5FP6mMnW6cUtytBsBTLgE81s
+profiles:
+  reednj:
+    N5FP6mMnW6cUtytBsBTLgE81s:
+      username: reednj
+      consumer_key: N5FP6mMnW6cUtytBsBTLgE81s
+      consumer_secret: LrCTb5Y8JcOV1XvBswACu48p3IqmFPgX2yOG3c45GBh4MtmR1X
+      token: 11646642-5jJ7aL5IMEfq9ZkuiewkkN7GxrTK1v69CnlUcVy1T
+      secret: dJ3D13bxuN0LvTEVN2LCWvDSmRk8CsgFFB1jGy7MARMJV
+  top_reddit_gold:
+    N5FP6mMnW6cUtytBsBTLgE81s:
+      username: top_reddit_gold
+      consumer_key: N5FP6mMnW6cUtytBsBTLgE81s
+      consumer_secret: LrCTb5Y8JcOV1XvBswACu48p3IqmFPgX2yOG3c45GBh4MtmR1X
+      token: 732439841275662340-OvEOSBklekfTtbv0qcpRysFeINREp6c
+      secret: QPAstuv77w7CtuVeePKpPTehkygItL7OUL1t0ndpNr3Km
