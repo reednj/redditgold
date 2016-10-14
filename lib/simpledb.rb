@@ -69,7 +69,8 @@ class SimpleDb
 			limit 12", @gold_cost, days].all;
 	end
 
-	def revenue_by_day(days)
+	def revenue_by_day(day_lookup)
+		since_date = Time.now - day_lookup.days
 
 		return self.db["select
 				date_index as comment_date,
@@ -77,10 +78,10 @@ class SimpleDb
 				COALESCE(sum(c.gold_change),0) * ? as revenue
 			from date_list dl
 				inner join comments c on date(c.created_date) = date(dl.date_index)
-			where
-				dl.date_index < now() &&
-				dl.date_index > now() - INTERVAL '?' day
-			group by dl.date_index", @gold_cost, days].all;
+			where dl.date_index < now()
+				and c.date_index > ? and
+				and c.created_date > ?
+			group by dl.date_index", @gold_cost, since_date, since_date].all;
 	end
 
 	def revenue_by_week(since_date=nil)
