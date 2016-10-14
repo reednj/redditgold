@@ -79,7 +79,7 @@ class SimpleDb
 			from date_list dl
 				inner join comments c on date(c.created_date) = date(dl.date_index)
 			where dl.date_index < now()
-				and c.date_index > ? and
+				and dl.date_index > ?
 				and c.created_date > ?
 			group by dl.date_index", @gold_cost, since_date, since_date].all;
 	end
