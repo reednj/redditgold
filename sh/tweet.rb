@@ -21,10 +21,13 @@ class App
 
 		# tweet the thread / comment, and print it to the 
 		# console
-		tweet_content = comment.to_tweet
-		puts tweet_content
-		twitter_client.update tweet_content 
-		
+		begin
+			tweet_content = comment.to_tweet
+			puts tweet_content
+			twitter_client.update tweet_content 
+		rescue Twitter::Error::Forbidden => e
+			puts "could not tweet (#{e})"
+		end
 		
 		# now mark the comment as tweeted so we won't send it out again
 		comment.was_tweeted = 1
