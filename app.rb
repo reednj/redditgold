@@ -18,12 +18,29 @@ set :erb, :escape_html => true
 GOLDCOST = 3.99
 DB = SimpleDb.new
 
+# by default all the errors in RACK get dumped to stderr - we want to 
+# change this so that it goes to a file, so we can capture the output
+# on systems where we don't have control over stderr
+def map_error_output(filename)
+	Dir.mkdir("#{settings.root}/tmp") unless File.exists?("#{settings.root}/tmp")
+	file = File.new("#{settings.root}/tmp/#{filename}", 'a+')
+	file.sync = true
+	$stderr.reopen file
+end
+
 configure :development do
+	# set :raise_errors, false
+	# set :show_exceptions, false
+
 	# run the db backup script to make sure the schema we have stored is up to date...
 	`./config/db/export-db.sh` if !Gem.win_platform?
 
 	also_reload './lib/simpledb.rb'
 	also_reload './lib/filecache.rb'
+end
+
+configure :production do
+	map_error_output("#{settings.environment}.log")
 end
 
 configure do
@@ -34,6 +51,11 @@ configure do
 		puts 'populating the date list. This might take a few minutes...'
 		DB.populate_dates
 	end
+	
+end
+
+get '/error/test' do
+	raise 'test error'
 end
 
 get '/' do
