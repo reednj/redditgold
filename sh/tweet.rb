@@ -1,12 +1,10 @@
-#!/usr/bin/ruby
+#!/usr/bin/env ruby
 
 require 'sequel'
-require 'yaml'
-require 'json'
 require 'twitter'
+require 'twitter/config'
 
 require_relative '../lib/model'
-require_relative '../lib/twitter-config'
 
 class App
 
@@ -41,11 +39,8 @@ class App
 	end
 
 	def twitter_client
-		config_file = '../config/twitter.yaml'
-		@twitter_client ||= Twitter::REST::Client.from_config(@twitter_user, :path => config_file)
+		@twitter_client ||= Twitter::REST::Client.from_config(@twitter_user)
 	end
-
-
 end
 
 
