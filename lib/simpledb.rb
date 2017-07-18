@@ -14,6 +14,8 @@ class SimpleDb
 			:password=>AppConfig.db.password
 		)
 
+		@db.extension(:connection_validator)
+
 	end
 
 	def db
