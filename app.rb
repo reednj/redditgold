@@ -8,7 +8,7 @@ require 'yaml'
 require 'erubis'
 
 require './config/db'
-require './lib/simpledb'
+require './lib/model'
 require './lib/filecache'
 
 set :gitdir, development? ? './.git' : '/home/reednj/code/redditgold.git/.git'
@@ -120,4 +120,18 @@ get '/gold/this_month' do
 	return [200, {'Content-type' => 'text/plain'}, data.to_s]
 end
 
+get '/status/age' do
+	comment = Comment.last
+	is_age_ok = comment.created_date.age < 1.hour
+	http_status = is_age_ok ? 200 : 500
 
+	return [
+		http_status, 
+		{"Content-Type" => 'application/json'}, 
+		{
+			:status => is_age_ok ? 'ok' : 'too_old',
+			:age => comment.created_date.age.to_i,
+			:age_text => comment.created_date.age_in_words
+		}.to_json
+	]
+end

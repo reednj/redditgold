@@ -176,6 +176,11 @@ class Time
 		Time.now - self
 	end
 
+	def age_in_words(t=nil)
+		t ||= Time.now
+		result = (t - self).abs.time_in_words
+		return t > self ? result + ' ago' : result + ' to go'
+	end
 end
 
 class Numeric
@@ -196,6 +201,35 @@ class Numeric
 	def to_pct
 		return 0.to_pct if self.nan?
 		(self >= 0 ? '+' : '') + ('%.2f' % (self * 100)) + ' %'
+	end
+
+
+	def time_in_words
+		if self < 1.minute
+			number = self.round
+			type = 'sec'
+		elsif self < 1.hour
+			number = (self / 1.minute).round
+			type = 'min'
+		elsif self < 1.day
+			number = (self / 1.hour).round
+			type = 'hour'
+		elsif self < 2.weeks
+			number = (self / 1.day).round
+			type = 'day'
+		elsif self < 5.weeks
+			number = (self / 1.week).round
+			type = 'week'
+		elsif self < 52.weeks
+			number = (self / 30.days).round 1
+			type = 'month'
+		else
+			number = (self / 365.days).round 1
+			type = 'year'
+		end
+
+		type += 's' if number != 1
+		"#{number.to_s} #{type}"
 	end
 end
 
