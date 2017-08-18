@@ -6,16 +6,8 @@ class SimpleDb
 	end
 
 	def connect
-		@db = Sequel.connect(
-			:adapter => 'mysql2',
-			:user => AppConfig.db.username,
-			:host => AppConfig.db.host,
-			:database => AppConfig.db.database,
-			:password=>AppConfig.db.password
-		)
-
+		@db = Sequel.connect AppConfig['db']
 		@db.extension(:connection_validator)
-
 	end
 
 	def db

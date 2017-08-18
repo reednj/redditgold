@@ -1,10 +1,6 @@
-require 'ostruct'
+require './config/yaml-load_first_file'
 
-AppConfig = OpenStruct.new({
-	:db => OpenStruct.new({
-		:username => 'linkuser',
-		:password => '',
-		:host => '127.0.0.1',
-		:database => 'gold'
-	})
-})
+AppConfig = YAML.load_first_file([
+	"#{ENV['HOME']}/config/gold.db.conf",
+	"./config/dev.config.yaml"
+])

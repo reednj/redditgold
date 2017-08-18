@@ -1,0 +1,7 @@
+---
+db:
+  adapter: mysql2
+  host: 127.0.0.1
+  username: linkuser
+  password: '' 
+  database: gold
