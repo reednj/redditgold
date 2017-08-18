@@ -9,8 +9,8 @@ require 'json'
 require 'rest-client'
 require 'cgi'
 
-require '../config/db.rb'
-require '../lib/simpledb'
+require './config/db.rb'
+require './lib/simpledb'
 
 class App
 
