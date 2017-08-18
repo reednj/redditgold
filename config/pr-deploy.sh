@@ -11,7 +11,6 @@ CONFIG=~/code/config_backup/redditgold
 rm -rf $WEB/*
 cp -R $SRC/* $WEB
 rm -rf $WEB/sh
-cp $CONFIG/db.rb $WEB/config/
 
 mkdir $WEB/tmp
 touch $WEB/tmp/restart.txt
