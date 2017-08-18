@@ -21,6 +21,5 @@ echo "Website deployed"
 rm -rf $SCRIPTS/*
 mkdir $SCRIPTS/sh
 cp -R $SRC/sh/* $SCRIPTS/sh
-cp $CONFIG/esql.dbpass.php $SCRIPTS/sh/lib
 
 echo "Script deployed"
