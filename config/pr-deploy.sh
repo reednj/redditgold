@@ -10,16 +10,8 @@ CONFIG=~/code/config_backup/redditgold
 # copy the required files to the website
 rm -rf $WEB/*
 cp -R $SRC/* $WEB
-rm -rf $WEB/sh
 
 mkdir $WEB/tmp
 touch $WEB/tmp/restart.txt
 
 echo "Website deployed"
-
-# now to the script folder
-rm -rf $SCRIPTS/*
-mkdir $SCRIPTS/sh
-cp -R $SRC/sh/* $SCRIPTS/sh
-
-echo "Script deployed"
